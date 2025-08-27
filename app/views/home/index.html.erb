@@ -7,7 +7,7 @@
         Enter your Romanian company's CUI (fiscal code) to discover eligible EU funding programs instantly.
       </p>
       
-      <%= form_with url: check_path, method: :post, class: "space-y-4" do |form| %>
+      <%= form_with url: check_path, method: :post, local: true, class: "space-y-4" do |form| %>
         <div class="form-control w-full">
           <%= form.text_field :cui, 
                              placeholder: "Enter CUI (e.g., RO12345678)", 
