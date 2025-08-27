@@ -55,12 +55,12 @@
           <strong>County:</strong> <%= @company.api_response['County'] %>
         </div>
         <div>
-          <strong>Turnover:</strong> 
-          <span class="badge badge-accent">€<%= number_with_delimiter(@company.api_response['Turnover']) %></span>
+          <strong>Turnover:</strong>
+          <span class="badge badge-accent"><%= number_with_delimiter(@company.api_response['Turnover']) %> RON</span>
         </div>
         <div>
-          <strong>Profit:</strong> 
-          <span class="badge badge-secondary">€<%= number_with_delimiter(@company.api_response['Profit']) %></span>
+          <strong>Profit:</strong>
+          <span class="badge badge-secondary"><%= number_with_delimiter(@company.api_response['Profit']) %> RON</span>
         </div>
       </div>
     </div>
