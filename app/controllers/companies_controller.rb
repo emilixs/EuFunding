@@ -28,6 +28,13 @@ class CompaniesController < ApplicationController
       @company = Company.create!(cui: cui, api_response: api_response)
     end
 
+    # One-time cleanup: Clear all cached results with old model errors
+    old_model_checks = CompanyProgramCheck.where("ai_response LIKE ?", "%claude-3-sonnet-20240229%")
+    if old_model_checks.exists?
+      Rails.logger.info "[CompaniesController] Clearing #{old_model_checks.count} cached results with old model errors"
+      old_model_checks.destroy_all
+    end
+
     # Check eligibility for all active programs
     @eligible_programs = []
     @ineligible_programs = []
@@ -35,6 +42,13 @@ class CompaniesController < ApplicationController
     FundingProgram.active.each do |program|
       # Check if we already have a result for this company-program combination
       existing_check = CompanyProgramCheck.find_by(company: @company, funding_program: program)
+
+      # Clear cached results that contain the old model error
+      if existing_check&.ai_response&.include?("claude-3-sonnet-20240229")
+        Rails.logger.info "[CompaniesController] Clearing cached result with old model error for company #{@company.id}, program #{program.id}"
+        existing_check.destroy!
+        existing_check = nil
+      end
 
       if existing_check
         if existing_check.eligible?
