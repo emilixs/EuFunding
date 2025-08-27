@@ -11,7 +11,7 @@ class EligibilityChecker
   def check_eligibility
     return mock_response if Rails.env.development? && anthropic_key_missing?
 
-    llm = RubyLLM.chat(model: "claude-3-sonnet-20240229")
+    llm = RubyLLM.chat(model: "claude-3-5-sonnet")
 
     prompt = build_prompt
     response = llm.ask(prompt)
