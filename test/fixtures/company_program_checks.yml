@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company: one
+  funding_program: one
+  eligible: false
+  ai_response: MyText
+
+two:
+  company: two
+  funding_program: two
+  eligible: false
+  ai_response: MyText

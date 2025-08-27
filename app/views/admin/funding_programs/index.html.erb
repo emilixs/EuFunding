@@ -1,0 +1,105 @@
+<!-- Admin Header -->
+<div class="flex justify-between items-center mb-8">
+  <div>
+    <h1 class="text-3xl font-bold">🛠️ Admin - Funding Programs</h1>
+    <p class="text-base-content/70">Manage EU funding programs and eligibility criteria</p>
+  </div>
+  <%= link_to "Back to Site", root_path, class: "btn btn-ghost" %>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  <div class="stat bg-base-100 shadow">
+    <div class="stat-title">Total Programs</div>
+    <div class="stat-value text-primary"><%= @funding_programs.count %></div>
+  </div>
+  <div class="stat bg-base-100 shadow">
+    <div class="stat-title">Active Programs</div>
+    <div class="stat-value text-success"><%= @funding_programs.where(active: true).count %></div>
+  </div>
+  <div class="stat bg-base-100 shadow">
+    <div class="stat-title">Inactive Programs</div>
+    <div class="stat-value text-warning"><%= @funding_programs.where(active: false).count %></div>
+  </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="mb-6">
+  <%= link_to new_admin_funding_program_path, class: "btn btn-primary" do %>
+    ➕ Add New Program
+  <% end %>
+</div>
+
+<!-- Programs Table -->
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <% if @funding_programs.any? %>
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Has Content</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @funding_programs.each do |program| %>
+              <tr>
+                <td>
+                  <% if program.active? %>
+                    <span class="badge badge-success">Active</span>
+                  <% else %>
+                    <span class="badge badge-warning">Inactive</span>
+                  <% end %>
+                </td>
+                <td>
+                  <div class="font-semibold"><%= program.title %></div>
+                </td>
+                <td>
+                  <div class="max-w-md">
+                    <%= truncate(program.description, length: 100) %>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex gap-2">
+                    <% if program.eligibility_rules.present? %>
+                      <span class="badge badge-success badge-sm">Rules</span>
+                    <% end %>
+                    <% if program.pdf_content.present? %>
+                      <span class="badge badge-info badge-sm">PDF</span>
+                    <% end %>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex gap-2">
+                    <%= link_to "View", admin_funding_program_path(program), 
+                               class: "btn btn-outline btn-xs" %>
+                    <%= link_to "Edit", edit_admin_funding_program_path(program), 
+                               class: "btn btn-primary btn-xs" %>
+                    <%= link_to "Delete", admin_funding_program_path(program), 
+                               method: :delete,
+                               class: "btn btn-error btn-xs",
+                               confirm: "Are you sure you want to delete #{program.title}?" %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center py-20">
+        <div class="text-6xl mb-4">📋</div>
+        <h2 class="text-2xl font-bold mb-4">No Programs Yet</h2>
+        <p class="text-base-content/80 mb-6">
+          Start by creating your first EU funding program.
+        </p>
+        <%= link_to "Create First Program", new_admin_funding_program_path, 
+                   class: "btn btn-primary btn-lg" %>
+      </div>
+    <% end %>
+  </div>
+</div>

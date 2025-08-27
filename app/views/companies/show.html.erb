@@ -1,0 +1,154 @@
+<!-- Company Header -->
+<div class="mb-8">
+  <%= link_to "← Back to Search", root_path, class: "btn btn-ghost btn-sm mb-4" %>
+  
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <div class="flex items-center justify-between mb-4">
+        <h1 class="card-title text-3xl">
+          <%= @company.company_name %>
+        </h1>
+        <div class="badge badge-lg <%= @company.using_mock_data? ? 'badge-warning' : 'badge-success' %>">
+          <%= @company.data_source_info %>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+        <div>
+          <strong>CUI:</strong> <%= @company.cui %>
+        </div>
+        <div>
+          <strong>Company Name:</strong> <%= @company.api_response['Name'] %>
+        </div>
+        <div>
+          <strong>Status:</strong> 
+          <span class="badge <%= @company.company_status == 'Active' ? 'badge-success' : 'badge-warning' %>">
+            <%= @company.company_status %>
+          </span>
+        </div>
+        <div>
+          <strong>Fiscal Activity:</strong> 
+          <span class="badge <%= @company.api_response['FiscalActivity'] == 'Active' ? 'badge-success' : 'badge-warning' %>">
+            <%= @company.api_response['FiscalActivity'] %>
+          </span>
+        </div>
+        <div>
+          <strong>Legal Form:</strong> <%= @company.api_response['LegalForm'] %>
+        </div>
+        <div>
+          <strong>Registration Date:</strong> <%= @company.api_response['Date'] %>
+        </div>
+        <div>
+          <strong>Employees:</strong> 
+          <span class="badge badge-info"><%= @company.api_response['Employees'] %> employees</span>
+        </div>
+        <div>
+          <strong>NACE Code:</strong> <%= @company.api_response['NACE'] %>
+        </div>
+        <div>
+          <strong>Address:</strong> <%= @company.api_response['Address'] %>
+        </div>
+        <div>
+          <strong>City:</strong> <%= @company.api_response['City'] %>
+        </div>
+        <div>
+          <strong>County:</strong> <%= @company.api_response['County'] %>
+        </div>
+        <div>
+          <strong>Turnover:</strong> 
+          <span class="badge badge-accent">€<%= number_with_delimiter(@company.api_response['Turnover']) %></span>
+        </div>
+        <div>
+          <strong>Profit:</strong> 
+          <span class="badge badge-secondary">€<%= number_with_delimiter(@company.api_response['Profit']) %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Eligible Programs -->
+<% if @eligible_programs.any? %>
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-6 text-success">✅ Eligible Programs (<%= @eligible_programs.count %>)</h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <% @eligible_programs.each do |item| %>
+        <% program = item[:program] %>
+        <% check = item[:check] %>
+        
+        <div class="card bg-base-100 shadow-xl border-l-4 border-l-success">
+          <div class="card-body">
+            <h3 class="card-title text-lg">
+              <%= program.title %>
+            </h3>
+            
+            <p class="text-sm text-base-content/80 mb-4">
+              <%= program.description.present? ? truncate(program.description, length: 150) : "No description available" %>
+            </p>
+            
+            <div class="bg-success/10 p-3 rounded mb-4">
+              <p class="text-sm">
+                <strong>AI Analysis:</strong> <%= check.ai_response %>
+              </p>
+            </div>
+            
+            <div class="card-actions justify-end">
+              <%= link_to "View Details", funding_program_path(program), class: "btn btn-outline btn-sm" %>
+              <%= link_to "💬 Chat with AI", chat_funding_program_path(program, company_id: @company.id), class: "btn btn-primary btn-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<!-- Ineligible Programs -->
+<% if @ineligible_programs.any? %>
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-6 text-warning">❌ Ineligible Programs (<%= @ineligible_programs.count %>)</h2>
+    
+    <div class="collapse collapse-arrow bg-base-200">
+      <input type="checkbox" />
+      <div class="collapse-title text-xl font-medium">
+        View Ineligible Programs
+      </div>
+      <div class="collapse-content">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <% @ineligible_programs.each do |item| %>
+            <% program = item[:program] %>
+            <% check = item[:check] %>
+            
+            <div class="card bg-base-100 shadow border-l-4 border-l-warning">
+              <div class="card-body">
+                <h3 class="card-title text-lg">
+                  <%= program.title %>
+                </h3>
+                
+                <div class="bg-warning/10 p-3 rounded">
+                  <p class="text-sm">
+                    <strong>Reason:</strong> <%= check.ai_response %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<!-- No Programs Message -->
+<% if @eligible_programs.empty? && @ineligible_programs.empty? %>
+  <div class="text-center py-20">
+    <div class="text-6xl mb-4">🔍</div>
+    <h2 class="text-2xl font-bold mb-4">No Active Programs</h2>
+    <p class="text-base-content/80">
+      There are currently no active EU funding programs in our database. 
+      Please check back later or contact an administrator to add programs.
+    </p>
+    <%= link_to "Search Another Company", root_path, class: "btn btn-primary mt-6" %>
+  </div>
+<% end %>

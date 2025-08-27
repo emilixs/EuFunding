@@ -23,6 +23,39 @@
   </head>
 
   <body>
-    <%= yield %>
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-lg">
+      <div class="navbar-start">
+        <%= link_to root_path, class: "btn btn-ghost text-xl" do %>
+          🇪🇺 EU Funding
+        <% end %>
+      </div>
+      <div class="navbar-end">
+        <%= link_to "Admin", admin_funding_programs_path, class: "btn btn-outline btn-sm" %>
+      </div>
+    </div>
+
+    <!-- Flash messages -->
+    <% if flash.any? %>
+      <div class="container mx-auto px-4 mt-4">
+        <% flash.each do |type, message| %>
+          <div class="alert <%= type == 'error' ? 'alert-error' : 'alert-success' %> mb-4">
+            <span><%= message %></span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-8">
+      <%= yield %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-center p-10 bg-base-200 text-base-content mt-20">
+      <div>
+        <p>EU Funding Eligibility Platform - Check your company's eligibility for European funding programs</p>
+      </div>
+    </footer>
   </body>
 </html>

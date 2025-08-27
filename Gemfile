@@ -17,6 +17,13 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+# AI/LLM integration
+gem "ruby_llm"
+# HTTP client for API calls
+gem "faraday"
+# TailwindCSS for styling
+gem "tailwindcss-rails"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 

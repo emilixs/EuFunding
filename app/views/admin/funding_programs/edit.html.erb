@@ -1,0 +1,119 @@
+<!-- Header -->
+<div class="mb-8">
+  <%= link_to "← Back to Programs", admin_funding_programs_path, class: "btn btn-ghost btn-sm mb-4" %>
+  <h1 class="text-3xl font-bold">✏️ Edit Funding Program</h1>
+  <p class="text-base-content/70">Editing: <strong><%= @funding_program.title %></strong></p>
+</div>
+
+<!-- Form Card -->
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <%= form_with model: [:admin, @funding_program], class: "space-y-6" do |form| %>
+      
+      <!-- Display Errors -->
+      <% if @funding_program.errors.any? %>
+        <div class="alert alert-error">
+          <h3>Please fix the following errors:</h3>
+          <ul class="list-disc list-inside">
+            <% @funding_program.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Program Title and Status -->
+      <div class="form-control mb-6">
+        <%= form.label :title, class: "label" do %>
+          <span class="label-text font-semibold">Program Title *</span>
+        <% end %>
+        <%= form.text_field :title, 
+                           class: "input input-bordered w-full",
+                           placeholder: "e.g., SME Innovation Support" %>
+      </div>
+
+      <div class="form-control mb-6">
+        <%= form.label :active, class: "label" do %>
+          <span class="label-text font-semibold">Program Status</span>
+        <% end %>
+        <label class="label cursor-pointer justify-start gap-4">
+          <%= form.check_box :active, class: "checkbox checkbox-primary" %>
+          <span class="label-text">Active (visible to users)</span>
+        </label>
+      </div>
+
+      <!-- Description -->
+      <div class="form-control mb-6">
+        <%= form.label :description, class: "label" do %>
+          <span class="label-text font-semibold">Program Description *</span>
+        <% end %>
+        <%= form.text_area :description, 
+                          class: "textarea textarea-bordered h-24 w-full",
+                          placeholder: "Brief description of the funding program..." %>
+        <div class="label">
+          <span class="label-text-alt">This will be shown to users on the main page</span>
+        </div>
+      </div>
+
+      <!-- Program Guide Content - Largest Field -->
+      <div class="form-control mb-6">
+        <div class="flex justify-between items-center">
+          <%= form.label :pdf_content, class: "label" do %>
+            <span class="label-text font-semibold">Program Guide Content</span>
+          <% end %>
+          <%= form.submit "🤖 Extract Rules with AI", 
+                        name: "extract_rules",
+                        class: "btn btn-sm btn-outline btn-primary",
+                        formaction: admin_funding_program_path(@funding_program),
+                        formmethod: "patch" %>
+        </div>
+        <%= form.text_area :pdf_content, 
+                          class: "textarea textarea-bordered w-full",
+                          style: "height: 300px;",
+                          placeholder: "Paste the full text content from the program PDF guide here..." %>
+        <div class="label">
+          <span class="label-text-alt">Paste PDF content above, then click 'Extract Rules with AI' to auto-populate the fields below</span>
+        </div>
+      </div>
+
+      <!-- AI-Extracted Eligibility Rules -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="form-control">
+          <%= form.label :company_eligibility_rules, class: "label" do %>
+            <span class="label-text font-semibold">Company Eligibility Rules</span>
+            <span class="badge badge-info badge-sm">Auto-extracted</span>
+          <% end %>
+          <%= form.text_area :company_eligibility_rules, 
+                            class: "textarea textarea-bordered h-32 w-full",
+                            placeholder: "Rules about company size, age, status, location, financials..." %>
+          <div class="label">
+            <span class="label-text-alt">Rules verifiable from company API data</span>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <%= form.label :project_eligibility_rules, class: "label" do %>
+            <span class="label-text font-semibold">Project Eligibility Rules</span>
+            <span class="badge badge-warning badge-sm">Manual review</span>
+          <% end %>
+          <%= form.text_area :project_eligibility_rules, 
+                            class: "textarea textarea-bordered h-32 w-full",
+                            placeholder: "Rules about project type, innovation, timeline, budget..." %>
+          <div class="label">
+            <span class="label-text-alt">Rules requiring project details and manual review</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Combined Rules (for backward compatibility) -->
+      <%= form.hidden_field :eligibility_rules %>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-end gap-4 pt-6 border-t">
+        <%= link_to "Cancel", admin_funding_programs_path, class: "btn btn-ghost" %>
+        <%= form.submit "Update Program", class: "btn btn-primary" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

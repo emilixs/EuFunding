@@ -10,5 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 0) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_27_112024) do
+  create_table "companies", force: :cascade do |t|
+    t.string "cui"
+    t.json "api_response"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "company_program_checks", force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.integer "funding_program_id", null: false
+    t.boolean "eligible"
+    t.text "ai_response"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_company_program_checks_on_company_id"
+    t.index ["funding_program_id"], name: "index_company_program_checks_on_funding_program_id"
+  end
+
+  create_table "funding_programs", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.text "pdf_content"
+    t.text "eligibility_rules"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "company_eligibility_rules"
+    t.text "project_eligibility_rules"
+  end
+
+  add_foreign_key "company_program_checks", "companies"
+  add_foreign_key "company_program_checks", "funding_programs"
 end

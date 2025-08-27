@@ -1,0 +1,113 @@
+<!-- Chat Header -->
+<div class="mb-6">
+  <%= link_to "← Back to Company", company_path(@company), class: "btn btn-ghost btn-sm mb-4" %>
+  
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold">💬 AI Consultation</h1>
+      <p class="text-base-content/80">
+        <strong><%= @program.title %></strong> • <%= @company.company_name %>
+      </p>
+    </div>
+    <div class="badge badge-primary badge-lg">
+      EU Funding Expert
+    </div>
+  </div>
+</div>
+
+<!-- Program Summary -->
+<div class="card bg-base-100 shadow mb-6">
+  <div class="card-body">
+    <h3 class="card-title text-lg">Program Overview</h3>
+    <p class="text-sm text-base-content/80">
+      <%= @program.description %>
+    </p>
+  </div>
+</div>
+
+<!-- Chat Interface -->
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <!-- Chat Messages Container -->
+    <div id="chat-messages" class="min-h-96 max-h-96 overflow-y-auto mb-4 p-4 bg-base-200 rounded-lg">
+      <div class="chat chat-start">
+        <div class="chat-image avatar">
+          <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm">
+            🤖
+          </div>
+        </div>
+        <div class="chat-bubble">
+          Hello! I'm your EU funding expert. I have detailed knowledge about the <%= @program.title %> program and your company profile. 
+          <br><br>
+          How can I help you today? You can ask about:
+          <ul class="list-disc list-inside mt-2">
+            <li>Application requirements and process</li>
+            <li>Project feasibility and risks</li>
+            <li>Budget planning and co-financing</li>
+            <li>Timeline and deadlines</li>
+            <li>Success strategies</li>
+          </ul>
+        </div>
+        <div class="chat-footer opacity-50 text-xs">
+          AI Assistant • Just now
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="flex gap-2" data-controller="chat" 
+         data-chat-program-id-value="<%= @program.id %>" 
+         data-chat-company-id-value="<%= @company.id %>">
+      
+      <input type="text" 
+             placeholder="Ask me anything about this funding program..." 
+             class="input input-bordered flex-grow" 
+             data-chat-target="input"
+             data-action="keydown.enter->chat#sendMessage">
+      
+      <button class="btn btn-primary" 
+              data-action="click->chat#sendMessage"
+              data-chat-target="sendButton">
+        <span data-chat-target="buttonText">Send</span>
+        <span class="loading loading-spinner loading-sm hidden" data-chat-target="spinner"></span>
+      </button>
+    </div>
+
+    <!-- Suggested Questions -->
+    <div class="mt-4">
+      <p class="text-sm font-semibold mb-2">Suggested questions:</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-outline btn-xs" data-action="click->chat#fillInput" data-question="What are the main eligibility requirements for this program?">
+          Eligibility requirements
+        </button>
+        <button class="btn btn-outline btn-xs" data-action="click->chat#fillInput" data-question="What are the typical success factors for applications?">
+          Success factors
+        </button>
+        <button class="btn btn-outline btn-xs" data-action="click->chat#fillInput" data-question="What documents do I need to prepare for the application?">
+          Required documents
+        </button>
+        <button class="btn btn-outline btn-xs" data-action="click->chat#fillInput" data-question="What are the main risks and challenges for my company?">
+          Risks & challenges
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Company Context (collapsed by default) -->
+<div class="collapse collapse-arrow bg-base-200 mt-6">
+  <input type="checkbox" />
+  <div class="collapse-title text-lg font-medium">
+    📊 Your Company Profile (AI Context)
+  </div>
+  <div class="collapse-content">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+      <div><strong>Company:</strong> <%= @company.company_name %></div>
+      <div><strong>CUI:</strong> <%= @company.cui %></div>
+      <div><strong>Legal Form:</strong> <%= @company.api_response['LegalForm'] %></div>
+      <div><strong>Employees:</strong> <%= @company.api_response['Employees'] %></div>
+      <div><strong>NACE:</strong> <%= @company.api_response['NACE'] %></div>
+      <div><strong>Status:</strong> <%= @company.company_status %></div>
+    </div>
+  </div>
+</div>

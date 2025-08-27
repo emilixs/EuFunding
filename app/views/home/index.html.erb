@@ -1,0 +1,64 @@
+<!-- Hero Section -->
+<div class="hero min-h-screen bg-base-200">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-5xl font-bold">EU Funding Check</h1>
+      <p class="py-6">
+        Enter your Romanian company's CUI (fiscal code) to discover eligible EU funding programs instantly.
+      </p>
+      
+      <%= form_with url: check_path, method: :post, class: "space-y-4", data: { turbo: false } do |form| %>
+        <div class="form-control w-full">
+          <%= form.text_field :cui, 
+                             placeholder: "Enter CUI (e.g., RO12345678)", 
+                             class: "input input-bordered input-lg w-full",
+                             required: true %>
+        </div>
+        
+        <%= form.submit "Check Eligibility", 
+                       class: "btn btn-primary btn-lg w-full" %>
+      <% end %>
+      
+      <p class="text-sm text-base-content/70 mt-4">
+        We'll fetch your company data from official sources and analyze eligibility for active EU funding programs.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="py-20">
+  <div class="text-center mb-16">
+    <h2 class="text-3xl font-bold">How It Works</h2>
+    <p class="mt-4 text-lg text-base-content/80">Simple, fast, and powered by AI</p>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Step 1 -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body text-center">
+        <div class="text-4xl mb-4">🔍</div>
+        <h3 class="card-title justify-center">Enter CUI</h3>
+        <p>Provide your company's fiscal identification code</p>
+      </div>
+    </div>
+    
+    <!-- Step 2 -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body text-center">
+        <div class="text-4xl mb-4">🤖</div>
+        <h3 class="card-title justify-center">AI Analysis</h3>
+        <p>Our AI analyzes your company against EU funding criteria</p>
+      </div>
+    </div>
+    
+    <!-- Step 3 -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body text-center">
+        <div class="text-4xl mb-4">💰</div>
+        <h3 class="card-title justify-center">Get Results</h3>
+        <p>Discover eligible programs and get expert consultation</p>
+      </div>
+    </div>
+  </div>
+</div>
