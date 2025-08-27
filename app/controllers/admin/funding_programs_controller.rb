@@ -2,8 +2,6 @@ class Admin::FundingProgramsController < ApplicationController
   before_action :authenticate_admin
   before_action :set_funding_program, only: [ :show, :edit, :update, :destroy ]
 
-  # Allow CSRF for proper authentication
-
   def index
     @funding_programs = FundingProgram.all.order(:title)
   end

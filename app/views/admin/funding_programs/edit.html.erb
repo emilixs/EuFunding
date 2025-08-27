@@ -154,7 +154,8 @@ document.addEventListener('DOMContentLoaded', function() {
           headers: {
             'Content-Type': 'application/json',
             'X-CSRF-Token': csrfToken,
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': 'Basic ' + btoa('admin:admin123')
           },
           body: JSON.stringify({
             content: content
