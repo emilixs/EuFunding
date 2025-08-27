@@ -1,204 +1,136 @@
 <% data = parse_ai_analysis(check.ai_response) %>
 <% status_info = eligibility_status_info(data[:result]) %>
 
-<!-- Status Banner -->
-<div class="alert <%= status_info[:class] %> mb-4">
-  <div class="flex items-center gap-2">
-    <span class="text-lg"><%= status_info[:icon] %></span>
-    <div>
-      <div class="font-bold"><%= status_info[:text] %></div>
-      <div class="text-sm opacity-90">
-        <% if status_info[:status] == 'eligible' %>
-          Compania îndeplinește criteriile de eligibilitate pentru acest program
-        <% elsif status_info[:status] == 'ineligible' %>
-          Compania nu îndeplinește toate criteriile necesare
-        <% else %>
-          Statusul de eligibilitate nu a putut fi determinat
-        <% end %>
-      </div>
+<!-- Compact Status & Stats -->
+<div class="flex flex-col sm:flex-row gap-3 mb-4">
+  <!-- Status -->
+  <div class="alert <%= status_info[:class] %> py-2 px-3 flex-1">
+    <span><%= status_info[:icon] %></span>
+    <span class="font-semibold"><%= status_info[:text] %></span>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="flex gap-2">
+    <div class="badge badge-success gap-1 py-3 px-3">
+      <span>✓</span>
+      <span><%= data[:acceptate].size %></span>
+    </div>
+    <div class="badge badge-error gap-1 py-3 px-3">
+      <span>✗</span>
+      <span><%= data[:refuzate].size %></span>
+    </div>
+    <div class="badge badge-warning gap-1 py-3 px-3">
+      <span>?</span>
+      <span><%= data[:nevalidate].size %></span>
     </div>
   </div>
 </div>
 
-<!-- Stats Overview -->
-<div class="stats shadow mb-6 w-full">
-  <div class="stat">
-    <div class="stat-figure text-success">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-    </div>
-    <div class="stat-title">Acceptate</div>
-    <div class="stat-value text-success"><%= data[:acceptate].size %></div>
-    <div class="stat-desc">Criterii îndeplinite</div>
-  </div>
-  
-  <div class="stat">
-    <div class="stat-figure text-error">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-    </div>
-    <div class="stat-title">Refuzate</div>
-    <div class="stat-value text-error"><%= data[:refuzate].size %></div>
-    <div class="stat-desc">Criterii neîndeplinite</div>
-  </div>
-  
-  <div class="stat">
-    <div class="stat-figure text-warning">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path></svg>
-    </div>
-    <div class="stat-title">Nevalidate</div>
-    <div class="stat-value text-warning"><%= data[:nevalidate].size %></div>
-    <div class="stat-desc">Informații lipsă</div>
-  </div>
-</div>
-
-<!-- Category Sections -->
-<div class="space-y-4">
-  <!-- REFUZATE Section (Most Important - Open by Default) -->
+<!-- Compact Category Lists -->
+<div class="space-y-2">
+  <!-- REFUZATE Section -->
   <% if data[:refuzate].any? %>
-    <div class="collapse collapse-arrow bg-error/10 border border-error/20">
+    <div class="collapse collapse-arrow bg-base-200">
       <input type="checkbox" checked />
-      <div class="collapse-title font-medium text-error">
-        <div class="flex items-center gap-2">
-          <span>❌</span>
-          <span>CRITERII REFUZATE (<%= data[:refuzate].size %>)</span>
-        </div>
-        <div class="text-sm font-normal opacity-80">Criterii care blochează eligibilitatea</div>
+      <div class="collapse-title text-sm py-2">
+        <span class="badge badge-error gap-1">
+          <span>✗</span>
+          <span><%= data[:refuzate].size %></span>
+        </span>
+        <span class="ml-2 font-medium">Criterii blocante</span>
       </div>
-      <div class="collapse-content">
-        <div class="space-y-3">
-          <% data[:refuzate].each do |item| %>
-            <div class="flex gap-3 p-3 bg-base-100 rounded-lg border-l-4 border-l-error">
-              <div class="flex-shrink-0 mt-1">
-                <span class="text-error text-lg">✖</span>
-              </div>
-              <div class="flex-grow">
-                <div class="font-semibold text-error"><%= item[:criterion] %></div>
-                <% if item[:explanation].present? %>
-                  <div class="text-sm text-base-content/80 mt-1"><%= item[:explanation] %></div>
-                <% end %>
-              </div>
+      <div class="collapse-content pt-0">
+        <% data[:refuzate].each do |item| %>
+          <div class="flex gap-2 py-1 text-sm">
+            <span class="text-error">•</span>
+            <div>
+              <span class="font-medium"><%= item[:criterion] %></span>
+              <% if item[:explanation].present? %>
+                <span class="text-base-content/70">: <%= item[:explanation] %></span>
+              <% end %>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>
 
-  <!-- NEVALIDATE Section (Second Priority - Open by Default) -->
+  <!-- NEVALIDATE Section -->
   <% if data[:nevalidate].any? %>
-    <div class="collapse collapse-arrow bg-warning/10 border border-warning/20">
+    <div class="collapse collapse-arrow bg-base-200">
       <input type="checkbox" checked />
-      <div class="collapse-title font-medium text-warning">
-        <div class="flex items-center gap-2">
-          <span>⚠️</span>
-          <span>INFORMAȚII NEVALIDATE (<%= data[:nevalidate].size %>)</span>
-        </div>
-        <div class="text-sm font-normal opacity-80">Informații lipsă sau incomplete</div>
+      <div class="collapse-title text-sm py-2">
+        <span class="badge badge-warning gap-1">
+          <span>?</span>
+          <span><%= data[:nevalidate].size %></span>
+        </span>
+        <span class="ml-2 font-medium">Informații lipsă</span>
       </div>
-      <div class="collapse-content">
-        <div class="space-y-3">
-          <% data[:nevalidate].each do |item| %>
-            <div class="flex gap-3 p-3 bg-base-100 rounded-lg border-l-4 border-l-warning">
-              <div class="flex-shrink-0 mt-1">
-                <span class="text-warning text-lg">?</span>
-              </div>
-              <div class="flex-grow">
-                <div class="font-semibold text-warning"><%= item[:criterion] %></div>
-                <% if item[:explanation].present? %>
-                  <div class="text-sm text-base-content/80 mt-1"><%= item[:explanation] %></div>
-                <% end %>
-              </div>
+      <div class="collapse-content pt-0">
+        <% data[:nevalidate].each do |item| %>
+          <div class="flex gap-2 py-1 text-sm">
+            <span class="text-warning">•</span>
+            <div>
+              <span class="font-medium"><%= item[:criterion] %></span>
+              <% if item[:explanation].present? %>
+                <span class="text-base-content/70">: <%= item[:explanation] %></span>
+              <% end %>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>
 
-  <!-- ACCEPTATE Section (Collapsed by Default) -->
+  <!-- ACCEPTATE Section -->
   <% if data[:acceptate].any? %>
-    <div class="collapse collapse-arrow bg-success/10 border border-success/20">
+    <div class="collapse collapse-arrow bg-base-200">
       <input type="checkbox" />
-      <div class="collapse-title font-medium text-success">
-        <div class="flex items-center gap-2">
-          <span>✅</span>
-          <span>CRITERII ACCEPTATE (<%= data[:acceptate].size %>)</span>
-        </div>
-        <div class="text-sm font-normal opacity-80">Criterii îndeplinite cu succes</div>
+      <div class="collapse-title text-sm py-2">
+        <span class="badge badge-success gap-1">
+          <span>✓</span>
+          <span><%= data[:acceptate].size %></span>
+        </span>
+        <span class="ml-2 font-medium">Criterii îndeplinite</span>
       </div>
-      <div class="collapse-content">
-        <div class="space-y-3">
-          <% data[:acceptate].each do |item| %>
-            <div class="flex gap-3 p-3 bg-base-100 rounded-lg border-l-4 border-l-success">
-              <div class="flex-shrink-0 mt-1">
-                <span class="text-success text-lg">✔</span>
-              </div>
-              <div class="flex-grow">
-                <div class="font-semibold text-success"><%= item[:criterion] %></div>
-                <% if item[:explanation].present? %>
-                  <div class="text-sm text-base-content/80 mt-1"><%= item[:explanation] %></div>
-                <% end %>
-              </div>
+      <div class="collapse-content pt-0">
+        <% data[:acceptate].each do |item| %>
+          <div class="flex gap-2 py-1 text-sm">
+            <span class="text-success">•</span>
+            <div>
+              <span class="font-medium"><%= item[:criterion] %></span>
+              <% if item[:explanation].present? %>
+                <span class="text-base-content/70">: <%= item[:explanation] %></span>
+              <% end %>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>
 </div>
 
-<!-- Next Steps Panel -->
+<!-- Simple Next Steps (only if needed) -->
 <% if data[:refuzate].any? || data[:nevalidate].any? %>
-  <div class="card bg-base-100 shadow mt-6">
-    <div class="card-body">
-      <h4 class="card-title text-lg">
-        <span>📋</span>
-        Pași următori
-      </h4>
-      <div class="space-y-2">
-        <% if data[:refuzate].any? %>
-          <div class="alert alert-error">
-            <span>❌</span>
-            <div>
-              <div class="font-semibold">Criterii blocante identificate</div>
-              <div class="text-sm">Revizuiește criteriile refuzate pentru a înțelege de ce compania nu este eligibilă.</div>
-            </div>
-          </div>
-        <% end %>
-        
-        <% if data[:nevalidate].any? %>
-          <div class="alert alert-warning">
-            <span>⚠️</span>
-            <div>
-              <div class="font-semibold">Informații incomplete</div>
-              <div class="text-sm">Completează informațiile lipsă pentru o analiză mai precisă.</div>
-            </div>
-          </div>
-        <% end %>
-        
-        <% if data[:refuzate].empty? && data[:nevalidate].any? %>
-          <div class="alert alert-info">
-            <span>💡</span>
-            <div>
-              <div class="font-semibold">Recomandare</div>
-              <div class="text-sm">Adaugă informațiile lipsă și rulează din nou analiza pentru un rezultat complet.</div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
+  <div class="mt-3 p-3 bg-base-200 rounded text-sm">
+    <div class="font-medium mb-1">💡 Pași următori:</div>
+    <% if data[:refuzate].any? %>
+      <div class="text-error">• Revizuiește criteriile blocante de mai sus</div>
+    <% end %>
+    <% if data[:nevalidate].any? %>
+      <div class="text-warning">• Completează informațiile lipsă pentru o analiză precisă</div>
+    <% end %>
   </div>
 <% end %>
 
 <!-- Raw AI Reasoning (Collapsed) -->
-<div class="collapse collapse-arrow bg-base-200 mt-6">
+<div class="collapse collapse-arrow bg-base-200 mt-3">
   <input type="checkbox" />
-  <div class="collapse-title text-sm font-medium">
+  <div class="collapse-title text-xs py-2">
     <span>🔍</span>
-    Vezi raționamentul complet AI (pentru debugging)
+    <span>Raționament AI complet</span>
   </div>
-  <div class="collapse-content">
-    <div class="bg-base-100 p-4 rounded text-sm">
-      <pre class="whitespace-pre-wrap text-xs"><%= data[:raw_text] %></pre>
-    </div>
+  <div class="collapse-content pt-0">
+    <div class="text-xs text-base-content/70 whitespace-pre-wrap"><%= data[:raw_text] %></div>
   </div>
 </div>
