@@ -94,9 +94,7 @@
                   <strong>🤖 AI Analysis</strong> - Click to view detailed reasoning
                 </div>
                 <div class="collapse-content px-3 pb-3">
-                  <div class="bg-base-100 p-3 rounded text-sm whitespace-pre-wrap">
-                    <%= check.ai_response %>
-                  </div>
+                  <%= render "ai_analysis_structured", check: check %>
                 </div>
               </div>
             </div>
@@ -141,9 +139,7 @@
                       <strong>❌ Ineligibility Reason</strong> - Click to view detailed analysis
                     </div>
                     <div class="collapse-content px-3 pb-3">
-                      <div class="bg-base-100 p-3 rounded text-sm whitespace-pre-wrap">
-                        <%= check.ai_response %>
-                      </div>
+                      <%= render "ai_analysis_structured", check: check %>
                     </div>
                   </div>
                 </div>
