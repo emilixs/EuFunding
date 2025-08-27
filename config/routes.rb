@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    # Admin root - redirect to funding programs or login
+    root "funding_programs#index"
+
     # Authentication routes
     get "login", to: "sessions#new"
     post "login", to: "sessions#create"
