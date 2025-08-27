@@ -106,13 +106,33 @@ class Admin::FundingProgramsController < ApplicationController
       4. Be specific and precise - don't add requirements not explicitly mentioned
       5. Use clear, actionable language
 
+      SPECIAL FOCUS FOR COMPANY RULES - Make them CONCRETE and VERIFIABLE:
+      - Transform vague legal references into specific, checkable criteria
+      - Instead of "Must be a company established under Law 31/1990" write "Must be a limited liability company (SRL) or joint stock company (SA)"
+      - Instead of "SME criteria" write "Must have between 10-250 employees AND annual turnover under €50 million"
+      - Include specific numerical thresholds, NACE codes, legal forms, geographic locations
+      - Use measurable criteria that can be automatically verified from company database fields
+      - For age requirements, specify exact years: "Must be operational for minimum 2 years"
+      - For location, be specific: "Must be registered in EU member states" or "Must be located in Romania"
+      - For financial criteria, include exact amounts and currency
+
+      EXAMPLES OF GOOD CONCRETE COMPANY RULES:
+      - Must have between 10-250 employees (SME definition)
+      - Annual turnover must be under €50 million
+      - Must be operational for minimum 2 years from registration date
+      - Must be a limited liability company (SRL) or joint stock company (SA)
+      - Must have active tax compliance status
+      - Must be registered in Romania or other EU member state
+      - Must have NACE code in manufacturing sector (codes 10-33)
+      - Must have minimum annual revenue of €100,000
+
       FUNDING PROGRAM CONTENT:
       #{content}
 
       Please respond in this exact format:
 
       COMPANY_RULES:
-      [List company-related requirements here]
+      [List company-related requirements here - make them concrete and verifiable]
 
       PROJECT_RULES:
       [List project-related requirements here]
