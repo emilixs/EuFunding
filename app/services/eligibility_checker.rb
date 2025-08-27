@@ -77,7 +77,14 @@ class EligibilityChecker
   end
 
   def parse_response(response)
-    response_text = response.to_s
+    # Extract text from RubyLLM::Message object properly
+    response_text = if response.respond_to?(:content)
+                      response.content
+                    elsif response.respond_to?(:text)
+                      response.text
+                    else
+                      response.to_s
+                    end
 
     # Extract the final result
     if response_text.match(/RESULT:\s*(ELIGIBLE|NOT_ELIGIBLE)/i)

@@ -87,10 +87,18 @@
               <%= program.description.present? ? truncate(program.description, length: 150) : "No description available" %>
             </p>
             
-            <div class="bg-success/10 p-3 rounded mb-4">
-              <p class="text-sm">
-                <strong>AI Analysis:</strong> <%= check.ai_response %>
-              </p>
+            <div class="bg-success/10 rounded mb-4">
+              <div class="collapse collapse-arrow">
+                <input type="checkbox" />
+                <div class="collapse-title text-sm font-medium px-3 py-2">
+                  <strong>🤖 AI Analysis</strong> - Click to view detailed reasoning
+                </div>
+                <div class="collapse-content px-3 pb-3">
+                  <div class="bg-base-100 p-3 rounded text-sm whitespace-pre-wrap">
+                    <%= check.ai_response %>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <div class="card-actions justify-end">
@@ -126,10 +134,18 @@
                   <%= program.title %>
                 </h3>
                 
-                <div class="bg-warning/10 p-3 rounded">
-                  <p class="text-sm">
-                    <strong>Reason:</strong> <%= check.ai_response %>
-                  </p>
+                <div class="bg-warning/10 rounded">
+                  <div class="collapse collapse-arrow">
+                    <input type="checkbox" />
+                    <div class="collapse-title text-sm font-medium px-3 py-2">
+                      <strong>❌ Ineligibility Reason</strong> - Click to view detailed analysis
+                    </div>
+                    <div class="collapse-content px-3 pb-3">
+                      <div class="bg-base-100 p-3 rounded text-sm whitespace-pre-wrap">
+                        <%= check.ai_response %>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
