@@ -46,21 +46,41 @@ module ApplicationHelper
     # Remove blocking criteria that are actually "no criteria" statements
     data[:refuzate].reject! do |item|
       text = item[:full_text].to_s.downcase
-      text.match?(/nu exist[aă] .* criterii .* (refuz|respins)/i) ||
-      text.match?(/nu sunt .* criterii .* (refuz|respins)/i) ||
-      text.match?(/nu avem .* criterii .* (refuz|respins)/i) ||
-      text.match?(/nu se identific[aă] .* criterii .* (refuz|respins)/i) ||
-      text.match?(/toate criteriile sunt (acceptate|îndeplinite)/i) ||
-      text.match?(/nu exist[aă] .* motive .* (refuz|respins)/i)
+      criterion = item[:criterion].to_s.downcase
+
+      # Check both full text and criterion for false positive patterns
+      false_positive_patterns = [
+        /nu exist[aă] .* criterii .* (refuz|respins)/,
+        /nu sunt .* criterii .* (refuz|respins)/,
+        /nu avem .* criterii .* (refuz|respins)/,
+        /nu se identific[aă] .* criterii .* (refuz|respins)/,
+        /toate criteriile sunt (acceptate|îndeplinite)/,
+        /nu exist[aă] .* motive .* (refuz|respins)/,
+        /nu sunt criterii specifice (refuz|respins)/,
+        /nu exist[aă] criterii specificate/,
+        /toate criteriile sunt acceptate/,
+        /nu exist[aă] criterii refuzate.*întrucât/,
+        /nu sunt specificate cerin[tț]e clare/
+      ]
+
+      false_positive_patterns.any? { |pattern| text.match?(pattern) || criterion.match?(pattern) }
     end
 
     # Remove missing info criteria that are actually "no missing info" statements
     data[:nevalidate].reject! do |item|
       text = item[:full_text].to_s.downcase
-      text.match?(/nu exist[aă] .* informa[tț]ii .* lips[aă]/i) ||
-      text.match?(/nu sunt .* informa[tț]ii .* lips[aă]/i) ||
-      text.match?(/toate informa[tț]iile sunt .* disponibile/i) ||
-      text.match?(/nu se identific[aă] .* informa[tț]ii .* lips[aă]/i)
+      criterion = item[:criterion].to_s.downcase
+
+      false_positive_patterns = [
+        /nu exist[aă] .* informa[tț]ii .* lips[aă]/,
+        /nu sunt .* informa[tț]ii .* lips[aă]/,
+        /toate informa[tț]iile sunt .* disponibile/,
+        /nu se identific[aă] .* informa[tț]ii .* lips[aă]/,
+        /nu exist[aă] informa[tț]ii lips[aă]/,
+        /toate informa[tț]iile sunt disponibile/
+      ]
+
+      false_positive_patterns.any? { |pattern| text.match?(pattern) || criterion.match?(pattern) }
     end
 
     data
