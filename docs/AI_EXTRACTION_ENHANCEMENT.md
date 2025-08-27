@@ -100,3 +100,42 @@ Verified through logs that the enhanced prompt generates more concrete rules:
 ## Impact
 
 This enhancement significantly improves the quality of extracted eligibility rules, making them more suitable for automated verification and clearer for users to understand and comply with.
+
+---
+
+## Update: Enhanced Eligibility Checking Logic (2025-08-27)
+
+### New AI Model
+- **Updated from**: `claude-3-sonnet-20240229` (causing "Unknown model" errors)
+- **Updated to**: `claude-3-5-sonnet-20241022` (Claude 4)
+- **Applied to**: EligibilityChecker, ChatService, Admin controller
+
+### New Romanian Categorization System
+Implemented detailed rule-by-rule analysis with Romanian categories:
+
+- **ACCEPTATE**: Company clearly meets this requirement
+- **REFUZATE**: Company clearly does NOT meet this requirement
+- **NEVALIDATE**: Cannot determine from available company data
+
+### New Eligibility Logic
+- **All ACCEPTATE** → Company is **ELIGIBLE**
+- **Any REFUZATE** → Company is **NOT_ELIGIBLE**
+- **Mixed ACCEPTATE + NEVALIDATE** (no REFUZATE) → Company is **ELIGIBLE**
+
+### Enhanced Company Data Focus
+- Now uses `company_eligibility_rules` field specifically
+- Falls back to `eligibility_rules` for backward compatibility
+- Focuses on verifiable company data from API
+
+### Example Output Format
+```
+RULE ANALYSIS:
+- Must have between 10-250 employees: ACCEPTATE - Company has 45 employees
+- Must be operational for minimum 2 years: ACCEPTATE - Registered in 2020
+- Must have NACE code in manufacturing: REFUZATE - NACE code 6201 is IT services
+
+FINAL DECISION: NOT_ELIGIBLE (due to REFUZATE manufacturing requirement)
+RESULT: NOT_ELIGIBLE
+```
+
+This provides much more detailed and transparent eligibility assessment.
