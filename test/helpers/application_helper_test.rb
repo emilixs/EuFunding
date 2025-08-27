@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ApplicationHelperTest < ActionView::TestCase
   test "parse_ai_analysis extracts structured data correctly" do
@@ -55,28 +55,28 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test "eligibility_status_info returns correct info for eligible status" do
     info = eligibility_status_info("ELIGIBILĂ")
-    
-    assert_equal 'eligible', info[:status]
-    assert_equal '✅ ELIGIBILĂ', info[:text]
-    assert_equal 'alert-success', info[:class]
-    assert_equal '✅', info[:icon]
+
+    assert_equal "eligible", info[:status]
+    assert_equal "✅ ELIGIBILĂ", info[:text]
+    assert_equal "alert-success", info[:class]
+    assert_equal "✅", info[:icon]
   end
 
   test "eligibility_status_info returns correct info for ineligible status" do
     info = eligibility_status_info("NU_ESTE_ELIGIBILĂ")
-    
-    assert_equal 'ineligible', info[:status]
-    assert_equal '❌ NU ESTE ELIGIBILĂ', info[:text]
-    assert_equal 'alert-error', info[:class]
-    assert_equal '❌', info[:icon]
+
+    assert_equal "ineligible", info[:status]
+    assert_equal "❌ NU ESTE ELIGIBILĂ", info[:text]
+    assert_equal "alert-error", info[:class]
+    assert_equal "❌", info[:icon]
   end
 
   test "eligibility_status_info handles unknown status" do
     info = eligibility_status_info("UNKNOWN")
-    
-    assert_equal 'unknown', info[:status]
-    assert_equal '⚠️ STATUS NECUNOSCUT', info[:text]
-    assert_equal 'alert-warning', info[:class]
-    assert_equal '⚠️', info[:icon]
+
+    assert_equal "unknown", info[:status]
+    assert_equal "⚠️ STATUS NECUNOSCUT", info[:text]
+    assert_equal "alert-warning", info[:class]
+    assert_equal "⚠️", info[:icon]
   end
 end

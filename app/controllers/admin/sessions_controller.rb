@@ -7,7 +7,7 @@ class Admin::SessionsController < ApplicationController
   def create
     username = params[:username]
     password = params[:password]
-    
+
     # Check credentials
     if username == "admin" && password == (Rails.application.credentials.admin_password || "admin123")
       session[:admin_authenticated] = true

@@ -1,16 +1,21 @@
 <% data = parse_ai_analysis(check.ai_response) %>
 
-<!-- Compact Category Lists -->
-<div class="space-y-1">
+<!-- Structured Analysis Content -->
+<div class="space-y-3">
   <!-- REFUZATE Section -->
   <% if data[:refuzate].any? %>
-    <div class="mb-2">
-      <div class="text-xs font-medium text-error mb-1">❌ Criterii blocante (<%= data[:refuzate].size %>)</div>
-      <ul class="list-disc list-inside space-y-1 text-xs leading-snug">
+    <div>
+      <div class="text-xs font-medium text-error mb-2 flex items-center gap-1">
+        <span class="text-sm">❌</span>
+        <span>Criterii blocante (<%= data[:refuzate].size %>)</span>
+      </div>
+      <ul class="list-disc list-inside space-y-1.5 text-xs leading-relaxed ml-1">
         <% data[:refuzate].each do |item| %>
-          <li><span class="font-medium"><%= item[:criterion] %></span><%=
-            item[:explanation].present? ? content_tag(:span, ": #{item[:explanation]}", class: "text-base-content/70") : ""
-          %></li>
+          <li>
+            <span class="font-medium"><%= item[:criterion] %></span><%=
+              item[:explanation].present? ? content_tag(:span, ": #{item[:explanation]}", class: "text-base-content/70") : ""
+            %>
+          </li>
         <% end %>
       </ul>
     </div>
@@ -18,13 +23,18 @@
 
   <!-- NEVALIDATE Section -->
   <% if data[:nevalidate].any? %>
-    <div class="mb-2">
-      <div class="text-xs font-medium text-warning mb-1">⚠️ Informații lipsă (<%= data[:nevalidate].size %>)</div>
-      <ul class="list-disc list-inside space-y-1 text-xs leading-snug">
+    <div>
+      <div class="text-xs font-medium text-warning mb-2 flex items-center gap-1">
+        <span class="text-sm">⚠️</span>
+        <span>Informații lipsă (<%= data[:nevalidate].size %>)</span>
+      </div>
+      <ul class="list-disc list-inside space-y-1.5 text-xs leading-relaxed ml-1">
         <% data[:nevalidate].each do |item| %>
-          <li><span class="font-medium"><%= item[:criterion] %></span><%=
-            item[:explanation].present? ? content_tag(:span, ": #{item[:explanation]}", class: "text-base-content/70") : ""
-          %></li>
+          <li>
+            <span class="font-medium"><%= item[:criterion] %></span><%=
+              item[:explanation].present? ? content_tag(:span, ": #{item[:explanation]}", class: "text-base-content/70") : ""
+            %>
+          </li>
         <% end %>
       </ul>
     </div>
@@ -34,15 +44,20 @@
   <% if data[:acceptate].any? %>
     <div class="collapse collapse-arrow">
       <input type="checkbox" />
-      <div class="collapse-title text-xs py-1 min-h-0">
-        <span class="font-medium text-success">✅ Criterii îndeplinite (<%= data[:acceptate].size %>)</span>
+      <div class="collapse-title text-xs py-2 min-h-0 px-0">
+        <div class="flex items-center gap-1">
+          <span class="text-sm">✅</span>
+          <span class="font-medium text-success">Criterii îndeplinite (<%= data[:acceptate].size %>)</span>
+        </div>
       </div>
-      <div class="collapse-content pt-0">
-        <ul class="list-disc list-inside space-y-1 text-xs leading-snug">
+      <div class="collapse-content px-0 pt-0">
+        <ul class="list-disc list-inside space-y-1.5 text-xs leading-relaxed ml-1">
           <% data[:acceptate].each do |item| %>
-            <li><span class="font-medium"><%= item[:criterion] %></span><%=
-              item[:explanation].present? ? content_tag(:span, ": #{item[:explanation]}", class: "text-base-content/70") : ""
-            %></li>
+            <li>
+              <span class="font-medium"><%= item[:criterion] %></span><%=
+                item[:explanation].present? ? content_tag(:span, ": #{item[:explanation]}", class: "text-base-content/70") : ""
+              %>
+            </li>
           <% end %>
         </ul>
       </div>
@@ -50,22 +65,16 @@
   <% end %>
 </div>
 
-<!-- Simple Next Steps (only if needed) -->
-<% if data[:refuzate].any? || data[:nevalidate].any? %>
-  <div class="mt-2 p-2 bg-base-200 rounded text-xs leading-snug">
-    <div class="font-medium mb-1">💡 Pași următori</div>
-    <% if data[:refuzate].any? %><div>• Revizuiește criteriile blocante</div><% end %>
-    <% if data[:nevalidate].any? %><div>• Completează informațiile lipsă</div><% end %>
-  </div>
-<% end %>
-
 <!-- Raw AI Reasoning (Collapsed) -->
-<div class="collapse collapse-arrow mt-2">
+<div class="collapse collapse-arrow mt-4">
   <input type="checkbox" />
-  <div class="collapse-title text-xs py-1 min-h-0">
-    <span>🔍 Raționament AI complet</span>
+  <div class="collapse-title text-xs py-2 min-h-0 px-0">
+    <div class="flex items-center gap-1">
+      <span class="text-sm">🔍</span>
+      <span>Raționament AI complet</span>
+    </div>
   </div>
-  <div class="collapse-content pt-0">
-    <div class="text-xs text-base-content/70 whitespace-pre-wrap leading-tight"><%= data[:raw_text] %></div>
+  <div class="collapse-content px-0 pt-0">
+    <div class="text-xs text-base-content/70 whitespace-pre-wrap leading-relaxed"><%= data[:raw_text] %></div>
   </div>
 </div>

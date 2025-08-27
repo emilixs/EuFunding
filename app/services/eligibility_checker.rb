@@ -90,11 +90,11 @@ class EligibilityChecker
     # Extract text from RubyLLM::Message object properly
     response_text = if response.respond_to?(:content)
                       response.content
-                    elsif response.respond_to?(:text)
+    elsif response.respond_to?(:text)
                       response.text
-                    else
+    else
                       response.to_s
-                    end
+    end
 
     # Extract the final result (support both Romanian and English)
     if response_text.match(/REZULTAT:\s*(ELIGIBILĂ|NU_ESTE_ELIGIBILĂ)/i)

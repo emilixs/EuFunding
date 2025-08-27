@@ -18,7 +18,17 @@ class ChatService
     full_prompt = "#{context}\n\nUser Question: #{message}"
 
     response = llm.ask(full_prompt)
-    response.to_s
+
+    # Extract text from RubyLLM::Message object properly
+    response_text = if response.respond_to?(:content)
+                      response.content
+    elsif response.respond_to?(:text)
+                      response.text
+    else
+                      response.to_s
+    end
+
+    response_text
   rescue => e
     "I'm sorry, I encountered an error while processing your question: #{e.message}"
   end
