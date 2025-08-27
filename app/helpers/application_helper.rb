@@ -42,6 +42,12 @@ module ApplicationHelper
       end
     end
 
+    # Normalize false positives - remove "no criteria" meta statements
+    if data[:refuzate].size == 1 &&
+       data[:refuzate][0][:full_text].match?(/nu exist[aă] .* criterii .* (refuz|respins)/i)
+      data[:refuzate].clear
+    end
+
     data
   end
 

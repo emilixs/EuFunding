@@ -87,13 +87,26 @@
               <%= program.description.present? ? truncate(program.description, length: 150) : "No description available" %>
             </p>
             
-            <div class="bg-success/10 rounded mb-4">
+            <div class="bg-base-100 border border-base-200 rounded-lg mb-4 shadow-sm">
               <div class="collapse collapse-arrow">
                 <input type="checkbox" />
-                <div class="collapse-title text-sm font-medium px-3 py-2">
-                  <strong>🤖 AI Analysis</strong> - Click to view detailed reasoning
+                <div class="collapse-title px-2 py-2">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="font-semibold text-sm">🤖 AI Analysis</span>
+                    <% data = parse_ai_analysis(check.ai_response) %>
+                    <% status_info = eligibility_status_info(data[:result]) %>
+                    <div class="badge <%= status_info[:class] == 'alert-success' ? 'badge-success' : status_info[:class] == 'alert-error' ? 'badge-error' : 'badge-warning' %> gap-1 px-2 py-1 text-xs">
+                      <%= status_info[:icon] %> <%= status_info[:text].split.last %>
+                    </div>
+                    <div class="flex gap-1">
+                      <div class="badge badge-success gap-1 px-2 py-1 text-xs">✓ <%= data[:acceptate].size %></div>
+                      <div class="badge badge-error gap-1 px-2 py-1 text-xs">✗ <%= data[:refuzate].size %></div>
+                      <div class="badge badge-warning gap-1 px-2 py-1 text-xs">? <%= data[:nevalidate].size %></div>
+                    </div>
+                  </div>
+                  <div class="text-xs text-base-content/70 mt-1">Click to view detailed reasoning</div>
                 </div>
-                <div class="collapse-content px-3 pb-3">
+                <div class="collapse-content px-2 pb-2">
                   <%= render "ai_analysis_structured", check: check %>
                 </div>
               </div>
@@ -132,13 +145,26 @@
                   <%= program.title %>
                 </h3>
                 
-                <div class="bg-warning/10 rounded">
+                <div class="bg-base-100 border border-base-200 rounded-lg">
                   <div class="collapse collapse-arrow">
                     <input type="checkbox" />
-                    <div class="collapse-title text-sm font-medium px-3 py-2">
-                      <strong>❌ Ineligibility Reason</strong> - Click to view detailed analysis
+                    <div class="collapse-title px-2 py-2">
+                      <div class="flex items-center gap-2 flex-wrap">
+                        <span class="font-semibold text-sm">❌ Ineligibility Reason</span>
+                        <% data = parse_ai_analysis(check.ai_response) %>
+                        <% status_info = eligibility_status_info(data[:result]) %>
+                        <div class="badge <%= status_info[:class] == 'alert-success' ? 'badge-success' : status_info[:class] == 'alert-error' ? 'badge-error' : 'badge-warning' %> gap-1 px-2 py-1 text-xs">
+                          <%= status_info[:icon] %> <%= status_info[:text].split.last %>
+                        </div>
+                        <div class="flex gap-1">
+                          <div class="badge badge-success gap-1 px-2 py-1 text-xs">✓ <%= data[:acceptate].size %></div>
+                          <div class="badge badge-error gap-1 px-2 py-1 text-xs">✗ <%= data[:refuzate].size %></div>
+                          <div class="badge badge-warning gap-1 px-2 py-1 text-xs">? <%= data[:nevalidate].size %></div>
+                        </div>
+                      </div>
+                      <div class="text-xs text-base-content/70 mt-1">Click to view detailed analysis</div>
                     </div>
-                    <div class="collapse-content px-3 pb-3">
+                    <div class="collapse-content px-2 pb-2">
                       <%= render "ai_analysis_structured", check: check %>
                     </div>
                   </div>
