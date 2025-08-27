@@ -31,48 +31,12 @@ class Admin::FundingProgramsController < ApplicationController
   end
 
   def update
-    # Check if this is an AI extraction request
-    if params[:extract_rules]
-      Rails.logger.info "[Admin] AI extraction requested for program #{@funding_program.id}"
-
-      content = params.dig(:funding_program, :pdf_content)
-      if content.present? && content.length > 50
-        begin
-          # Extract eligibility rules using Claude
-          llm = RubyLLM.chat(model: "claude-3-5-sonnet")
-          prompt = build_extraction_prompt(content)
-          response = llm.ask(prompt)
-
-          response_text = response.respond_to?(:content) ? response.content : response.to_s
-          parsed_rules = parse_eligibility_response(response_text)
-
-          # Update the funding program with extracted rules
-          @funding_program.assign_attributes(funding_program_params)
-          @funding_program.company_eligibility_rules = parsed_rules[:company_rules]
-          @funding_program.project_eligibility_rules = parsed_rules[:project_rules]
-          @funding_program.eligibility_rules = [ parsed_rules[:company_rules], parsed_rules[:project_rules] ].filter(&:present?).join("\n\n")
-
-          Rails.logger.info "[Admin] AI extraction completed successfully"
-          flash[:success] = "✅ Eligibility rules extracted successfully using AI!"
-
-        rescue => e
-          Rails.logger.error "[Admin] AI extraction failed: #{e.message}"
-          flash[:error] = "❌ Failed to extract rules: #{e.message}"
-        end
-      else
-        flash[:error] = "Please add more content to the Program Guide field before extracting rules."
-      end
-
-      render :edit
+    if @funding_program.update(funding_program_params)
+      flash[:success] = "Funding program updated successfully"
+      redirect_to admin_funding_program_path(@funding_program)
     else
-      # Normal update
-      if @funding_program.update(funding_program_params)
-        flash[:success] = "Funding program updated successfully"
-        redirect_to admin_funding_program_path(@funding_program)
-      else
-        flash.now[:error] = "Please fix the errors below"
-        render :edit
-      end
+      flash.now[:error] = "Please fix the errors below"
+      render :edit
     end
   end
 

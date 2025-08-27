@@ -61,13 +61,11 @@
           <%= form.label :pdf_content, class: "label" do %>
             <span class="label-text font-semibold">Program Guide Content</span>
           <% end %>
-          <%= form.submit "🤖 Extract Rules with AI", 
-                        name: "extract_rules",
-                        class: "btn btn-sm btn-outline btn-primary",
-                        formaction: admin_funding_program_path(@funding_program),
-                        formmethod: "patch" %>
+          <button type="button" id="extract-rules-btn" class="btn btn-sm btn-outline btn-primary">
+            🤖 Extract Rules with AI
+          </button>
         </div>
-        <%= form.text_area :pdf_content, 
+        <%= form.text_area :pdf_content,
                           class: "textarea textarea-bordered w-full",
                           style: "height: 300px;",
                           placeholder: "Paste the full text content from the program PDF guide here..." %>
@@ -83,9 +81,10 @@
             <span class="label-text font-semibold">Company Eligibility Rules</span>
             <span class="badge badge-info badge-sm">Auto-extracted</span>
           <% end %>
-          <%= form.text_area :company_eligibility_rules, 
+          <%= form.text_area :company_eligibility_rules,
                             class: "textarea textarea-bordered h-32 w-full",
-                            placeholder: "Rules about company size, age, status, location, financials..." %>
+                            placeholder: "Rules about company size, age, status, location, financials...",
+                            data: { target: "eligibility-extractor.companyRules" } %>
           <div class="label">
             <span class="label-text-alt">Rules verifiable from company API data</span>
           </div>
@@ -96,9 +95,10 @@
             <span class="label-text font-semibold">Project Eligibility Rules</span>
             <span class="badge badge-warning badge-sm">Manual review</span>
           <% end %>
-          <%= form.text_area :project_eligibility_rules, 
+          <%= form.text_area :project_eligibility_rules,
                             class: "textarea textarea-bordered h-32 w-full",
-                            placeholder: "Rules about project type, innovation, timeline, budget..." %>
+                            placeholder: "Rules about project type, innovation, timeline, budget...",
+                            data: { target: "eligibility-extractor.projectRules" } %>
           <div class="label">
             <span class="label-text-alt">Rules requiring project details and manual review</span>
           </div>
@@ -106,7 +106,7 @@
       </div>
 
       <!-- Combined Rules (for backward compatibility) -->
-      <%= form.hidden_field :eligibility_rules %>
+      <%= form.hidden_field :eligibility_rules, data: { target: "eligibility-extractor.combinedRules" } %>
 
       <!-- Action Buttons -->
       <div class="flex justify-end gap-4 pt-6 border-t">
@@ -117,3 +117,84 @@
     <% end %>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const extractBtn = document.getElementById('extract-rules-btn');
+  const pdfContentField = document.querySelector('#funding_program_pdf_content');
+  const companyRulesField = document.querySelector('#funding_program_company_eligibility_rules');
+  const projectRulesField = document.querySelector('#funding_program_project_eligibility_rules');
+  const combinedRulesField = document.querySelector('#funding_program_eligibility_rules');
+
+  if (extractBtn && pdfContentField) {
+    extractBtn.addEventListener('click', async function(e) {
+      e.preventDefault();
+
+      const content = pdfContentField.value.trim();
+      if (content.length < 100) {
+        showToast('Please add more content to the Program Guide field before extracting rules.', 'warning');
+        return;
+      }
+
+      // Show loading state
+      const originalText = extractBtn.innerHTML;
+      extractBtn.innerHTML = '🔄 Extracting...';
+      extractBtn.disabled = true;
+
+      try {
+        const response = await fetch('/admin/extract_eligibility_rules', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+          },
+          body: JSON.stringify({
+            content: content
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // Populate the extracted rules
+          if (companyRulesField) companyRulesField.value = data.company_rules || '';
+          if (projectRulesField) projectRulesField.value = data.project_rules || '';
+
+          // Combine for backward compatibility
+          const combinedRules = [data.company_rules, data.project_rules].filter(Boolean).join('\n\n');
+          if (combinedRulesField) combinedRulesField.value = combinedRules;
+
+          // Show success
+          showToast('✅ Eligibility rules extracted successfully!', 'success');
+
+        } else {
+          const error = await response.json();
+          showToast('❌ Failed to extract rules: ' + (error.error || 'Unknown error'), 'error');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showToast('❌ Network error: ' + error.message, 'error');
+      }
+
+      // Reset button
+      extractBtn.innerHTML = originalText;
+      extractBtn.disabled = false;
+    });
+  }
+
+  function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = 'toast toast-top toast-end z-50';
+    toast.innerHTML = `
+      <div class="alert alert-${type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'error'}">
+        <span>${message}</span>
+      </div>
+    `;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 4000);
+  }
+});
+</script>
