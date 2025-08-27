@@ -31,19 +31,7 @@
         <% end %>
       </div>
       <div class="navbar-end">
-        <% if session[:admin_authenticated] %>
-          <div class="dropdown dropdown-end">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
-              👤 Admin
-            </div>
-            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-              <li><%= link_to "Manage Programs", admin_funding_programs_path %></li>
-              <li><%= link_to "Logout", admin_logout_path, method: :delete, class: "text-error" %></li>
-            </ul>
-          </div>
-        <% else %>
-          <%= link_to "Admin", admin_login_path, class: "btn btn-outline btn-sm" %>
-        <% end %>
+        <!-- Admin access through /admin URL -->
       </div>
     </div>
 
