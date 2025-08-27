@@ -142,19 +142,30 @@ document.addEventListener('DOMContentLoaded', function() {
       extractBtn.disabled = true;
 
       try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        if (!csrfToken) {
+          showToast('❌ CSRF token not found. Please refresh the page.', 'error');
+          return;
+        }
+
+        console.log('Making AI extraction request...');
         const response = await fetch('/admin/extract_eligibility_rules', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+            'X-CSRF-Token': csrfToken,
+            'Accept': 'application/json'
           },
           body: JSON.stringify({
             content: content
           })
         });
 
+        console.log('Response status:', response.status);
+
         if (response.ok) {
           const data = await response.json();
+          console.log('Extracted data:', data);
 
           // Populate the extracted rules
           if (companyRulesField) companyRulesField.value = data.company_rules || '';
@@ -168,11 +179,12 @@ document.addEventListener('DOMContentLoaded', function() {
           showToast('✅ Eligibility rules extracted successfully!', 'success');
 
         } else {
-          const error = await response.json();
-          showToast('❌ Failed to extract rules: ' + (error.error || 'Unknown error'), 'error');
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          showToast('❌ Failed to extract rules: ' + (response.status + ' - ' + errorText), 'error');
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Network error:', error);
         showToast('❌ Network error: ' + error.message, 'error');
       }
 
