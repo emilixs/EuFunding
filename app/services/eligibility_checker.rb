@@ -11,7 +11,7 @@ class EligibilityChecker
   def check_eligibility
     return mock_response if Rails.env.development? && anthropic_key_missing?
 
-    llm = RubyLLM.chat(model: "claude-3-5-sonnet")
+    llm = RubyLLM.chat(model: "claude-3-5-sonnet-20241022")
 
     prompt = build_prompt
     response = llm.ask(prompt)
@@ -27,26 +27,38 @@ class EligibilityChecker
   private
 
   def build_prompt
+    company_rules = @program.company_eligibility_rules.presence || @program.eligibility_rules
+
     <<~PROMPT
-      You are an EU funding eligibility expert. Analyze if this Romanian company is eligible for the funding program.
+      You are an EU funding eligibility expert. Analyze this Romanian company against EACH specific eligibility rule.
 
       COMPANY DATA:
       #{format_company_data}
 
-      PROGRAM REQUIREMENTS:
-      Title: #{@program.title}
-      Description: #{@program.description}
-      Eligibility Rules: #{@program.eligibility_rules}
+      PROGRAM: #{@program.title}
+
+      COMPANY ELIGIBILITY RULES TO CHECK:
+      #{company_rules}
 
       INSTRUCTIONS:
-      1. Analyze the company data against the program requirements
-      2. Reply with exactly "ELIGIBLE" or "NOT_ELIGIBLE" as the first word
-      3. Follow with a brief explanation (2-3 sentences)
+      1. Check EACH rule individually against the company data
+      2. For each rule, classify it as one of:
+         - ACCEPTATE: Company clearly meets this requirement
+         - REFUZATE: Company clearly does NOT meet this requirement
+         - NEVALIDATE: Cannot determine from available company data (missing information)
 
-      Example format:
-      ELIGIBLE: The company meets all requirements because...
-      OR
-      NOT_ELIGIBLE: The company does not qualify because...
+      3. Respond in this EXACT format:
+
+      RULE ANALYSIS:
+      - [Rule text]: ACCEPTATE/REFUZATE/NEVALIDATE - [Brief explanation]
+      - [Rule text]: ACCEPTATE/REFUZATE/NEVALIDATE - [Brief explanation]
+
+      FINAL DECISION:
+      - If ALL rules are ACCEPTATE: Company is ELIGIBLE
+      - If ANY rule is REFUZATE: Company is NOT_ELIGIBLE
+      - If some ACCEPTATE and some NEVALIDATE (no REFUZATE): Company is ELIGIBLE
+
+      RESULT: ELIGIBLE/NOT_ELIGIBLE
     PROMPT
   end
 
@@ -65,11 +77,19 @@ class EligibilityChecker
   end
 
   def parse_response(response)
-    eligible = response.to_s.upcase.start_with?("ELIGIBLE")
+    response_text = response.to_s
+
+    # Extract the final result
+    if response_text.match(/RESULT:\s*(ELIGIBLE|NOT_ELIGIBLE)/i)
+      eligible = $1.upcase == "ELIGIBLE"
+    else
+      # Fallback to old parsing method
+      eligible = response_text.upcase.include?("ELIGIBLE") && !response_text.upcase.include?("NOT_ELIGIBLE")
+    end
 
     {
       eligible: eligible,
-      reason: response.to_s
+      reason: response_text
     }
   end
 

@@ -56,7 +56,7 @@ class Admin::FundingProgramsController < ApplicationController
 
     begin
       # Use RubyLLM to extract eligibility rules with ultrathink
-      llm = RubyLLM.chat(model: "claude-3-5-sonnet")
+      llm = RubyLLM.chat(model: "claude-3-5-sonnet-20241022")
 
       prompt = build_extraction_prompt(content)
       response = llm.ask(prompt)

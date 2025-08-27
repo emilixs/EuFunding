@@ -11,7 +11,7 @@ class ChatService
   def ask(message)
     return mock_response(message) if Rails.env.development? && anthropic_key_missing?
 
-    llm = RubyLLM.chat(model: "claude-3-sonnet-20240229")
+    llm = RubyLLM.chat(model: "claude-3-5-sonnet-20241022")
 
     # Build context for the conversation
     context = build_context
