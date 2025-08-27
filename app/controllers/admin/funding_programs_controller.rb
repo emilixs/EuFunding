@@ -92,50 +92,51 @@ class Admin::FundingProgramsController < ApplicationController
 
   def build_extraction_prompt(content)
     <<~PROMPT
-      Ultrathink: You are an expert EU funding program analyst. I need you to carefully analyze the following EU funding program documentation and extract eligibility rules into two distinct categories.
+      Ultrathink: Ești un expert analist în programe de finanțare europeană. Trebuie să analizezi cu atenție următoarea documentație de program de finanțare UE și să extragi criteriile de eligibilitate în două categorii distincte.
 
-      CRITICAL INSTRUCTIONS:
-      1. Extract ONLY explicit eligibility requirements mentioned in the text
-      2. Categorize them into:
-         - COMPANY RULES: Requirements that can be verified from company API data (size, age, legal status, location, financial metrics, employees, NACE codes, etc.)
-         - PROJECT RULES: Requirements that need project-specific information or manual review (innovation type, project timeline, research focus, etc.)
+      INSTRUCȚIUNI CRITICE:
+      1. Extrage DOAR cerințele de eligibilitate explicite menționate în text
+      2. Categorizează-le în:
+         - COMPANY RULES: Cerințe care pot fi verificate din datele API ale companiei (mărime, vechime, statut juridic, locație, indicatori financiari, angajați, coduri NACE, etc.)
+         - PROJECT RULES: Cerințe care necesită informații specifice proiectului sau revizuire manuală (tipul de inovație, cronologia proiectului, focusul cercetării, etc.)
 
-      3. Format each rule as a bullet point starting with "-"
-      4. Be specific and precise - don't add requirements not explicitly mentioned
-      5. Use clear, actionable language
+      3. Formatează fiecare regulă ca punct cu bullet începând cu "-"
+      4. Fii specific și precis - nu adăuga cerințe care nu sunt menționate explicit
+      5. Folosește un limbaj clar și acționabil
+      6. TOATE REGULILE TREBUIE SĂ FIE SCRISE ÎN LIMBA ROMÂNĂ
 
-      SPECIAL FOCUS FOR COMPANY RULES - Make them CONCRETE and VERIFIABLE:
-      - Transform vague legal references into specific, checkable criteria
-      - Instead of "Must be a company established under Law 31/1990" write "Must be a limited liability company (SRL) or joint stock company (SA)"
-      - Instead of "SME criteria" write "Must have between 10-250 employees AND annual turnover under €50 million"
-      - Include specific numerical thresholds, NACE codes, legal forms, geographic locations
-      - Use measurable criteria that can be automatically verified from company database fields
-      - For age requirements, specify exact years: "Must be operational for minimum 2 years"
-      - For location, be specific: "Must be registered in EU member states" or "Must be located in Romania"
-      - For financial criteria, include exact amounts and currency
+      FOCUS SPECIAL PENTRU COMPANY RULES - Fă-le CONCRETE și VERIFICABILE:
+      - Transformă referințele juridice vagi în criterii specifice, verificabile
+      - În loc de "Trebuie să fie o companie înființată conform Legii 31/1990" scrie "Trebuie să fie o societate cu răspundere limitată (SRL) sau societate pe acțiuni (SA)"
+      - În loc de "criterii IMM" scrie "Trebuie să aibă între 10-250 angajați ȘI cifra de afaceri anuală sub 50 milioane €"
+      - Include praguri numerice specifice, coduri NACE, forme juridice, locații geografice
+      - Folosește criterii măsurabile care pot fi verificate automat din câmpurile bazei de date a companiei
+      - Pentru cerințe de vechime, specifică anii exacți: "Trebuie să fie operațională minimum 2 ani de la data înregistrării"
+      - Pentru locație, fii specific: "Trebuie să fie înregistrată în statele membre UE" sau "Trebuie să fie localizată în România"
+      - Pentru criterii financiare, include sume exacte și moneda
 
-      EXAMPLES OF GOOD CONCRETE COMPANY RULES:
-      - Must have between 10-250 employees (SME definition)
-      - Annual turnover must be under €50 million
-      - Must be operational for minimum 2 years from registration date
-      - Must be a limited liability company (SRL) or joint stock company (SA)
-      - Must have active tax compliance status
-      - Must be registered in Romania or other EU member state
-      - Must have NACE code in manufacturing sector (codes 10-33)
-      - Must have minimum annual revenue of €100,000
+      EXEMPLE DE COMPANY RULES CONCRETE BUNE (ÎN ROMÂNĂ):
+      - Trebuie să aibă între 10-250 angajați (definiția IMM)
+      - Cifra de afaceri anuală trebuie să fie sub 50 milioane €
+      - Trebuie să fie operațională minimum 2 ani de la data înregistrării
+      - Trebuie să fie o societate cu răspundere limitată (SRL) sau societate pe acțiuni (SA)
+      - Trebuie să aibă statut activ de conformitate fiscală
+      - Trebuie să fie înregistrată în România sau alte state membre UE
+      - Trebuie să aibă cod NACE în sectorul manufacturier (codurile 10-33)
+      - Trebuie să aibă venituri anuale minime de 100.000 €
 
-      FUNDING PROGRAM CONTENT:
+      CONȚINUTUL PROGRAMULUI DE FINANȚARE:
       #{content}
 
-      Please respond in this exact format:
+      Te rog să răspunzi în acest format exact (ÎN ROMÂNĂ):
 
       COMPANY_RULES:
-      [List company-related requirements here - make them concrete and verifiable]
+      [Listează aici cerințele legate de companie - fă-le concrete și verificabile, ÎN ROMÂNĂ]
 
       PROJECT_RULES:
-      [List project-related requirements here]
+      [Listează aici cerințele legate de proiect, ÎN ROMÂNĂ]
 
-      If no rules are found in a category, write "- No specific requirements mentioned"
+      Dacă nu se găsesc reguli într-o categorie, scrie "- Nu sunt menționate cerințe specifice"
     PROMPT
   end
 
