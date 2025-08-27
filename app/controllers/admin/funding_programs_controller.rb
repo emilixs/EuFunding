@@ -170,9 +170,9 @@ class Admin::FundingProgramsController < ApplicationController
   end
 
   def authenticate_admin
-    # Simple HTTP basic authentication for MVP
-    authenticate_or_request_with_http_basic do |username, password|
-      username == "admin" && password == (Rails.application.credentials.admin_password || "admin123")
+    # Session-based authentication - redirect to login if not authenticated
+    unless session[:admin_authenticated]
+      redirect_to admin_login_path
     end
   end
 end
