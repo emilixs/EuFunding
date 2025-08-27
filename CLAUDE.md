@@ -91,10 +91,12 @@ The project includes comprehensive development rules in `AGENTS.md` covering:
 - Brakeman security scanning enabled
 
 ### Git Workflow
-- **IMPORTANT: Commit frequently after small batches of work**
-- Run `bundle exec rubocop` before every commit
+- **CRITICAL: Commit immediately after each resolution or feature completion**
+- **Always run `bundle exec rubocop -a` to fix style issues before commits**
+- Run `bundle exec rubocop` to check for any remaining issues
 - Use descriptive commit messages following conventional commits format
 - Each commit should represent a complete, working change
+- **Never delay commits** - commit after every meaningful progress
 
 ### Dependencies Management
 - Use **Bundler** for gem management
