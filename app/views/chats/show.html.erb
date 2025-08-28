@@ -1,0 +1,57 @@
+<div class="container mx-auto max-w-4xl p-6">
+  <div class="mb-6">
+    <h1 class="text-2xl font-semibold text-foreground">Chat AI</h1>
+    <p class="text-sm text-muted-foreground">Program: <%= @program.name %> · Companie: <%= @company.cui %></p>
+  </div>
+
+  <div class="rounded-lg border bg-white">
+    <div id="messages" class="h-80 overflow-y-auto p-4 space-y-3">
+      <% @messages.each do |m| %>
+        <div class="text-sm"><%= m %></div>
+      <% end %>
+    </div>
+    <div class="border-t p-3">
+      <form id="chat-form" class="flex items-center gap-2">
+        <input id="message" name="message" type="text" placeholder="Scrie întrebarea..." class="flex-1 border rounded px-3 py-2" />
+        <button type="submit" class="px-4 py-2 rounded bg-blue-600 text-white">Trimite</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('message');
+    const messages = document.getElementById('messages');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+
+      try {
+        const res = await fetch(window.location.pathname, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content },
+          body: JSON.stringify({ message: text })
+        });
+        if (!res.ok) throw new Error('Request failed');
+        const data = await res.json();
+        const userEl = document.createElement('div');
+        userEl.className = 'text-sm';
+        userEl.textContent = `🧑 ${data.user_message}`;
+        const aiEl = document.createElement('div');
+        aiEl.className = 'text-sm';
+        aiEl.textContent = `🤖 ${data.ai_response}`;
+        messages.appendChild(userEl);
+        messages.appendChild(aiEl);
+        messages.scrollTop = messages.scrollHeight;
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  });
+</script>
+
