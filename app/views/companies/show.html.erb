@@ -1,105 +1,101 @@
-<!-- Page Container with Figma design -->
-<div class="bg-[rgba(248,250,252,0.5)] min-h-screen">
-  <div class="max-w-[1120px] mx-auto px-[21px] py-7">
-
+<!-- Page Container with subtle background -->
+<div class="bg-slate-50/50 min-h-screen">
+  <div class="max-w-4xl mx-auto px-6 py-7">
+    
     <!-- Back Navigation -->
-    <div class="flex gap-[10.5px] items-center mb-7">
-      <%= link_to root_path, class: "flex items-center gap-[10.5px] text-[#45556c] hover:text-slate-800" do %>
-        <div class="w-3.5 h-3.5">
-          <img alt="" class="block max-w-none size-full" src="http://localhost:3845/assets/73a263b48954e5c25a3f0f2254dd162e90e3af64.svg" />
-        </div>
-        <div class="font-['Inter'] font-medium text-[12.3px] leading-[17.5px] text-[#45556c]">
-          Back to Search
-        </div>
+    <div class="flex items-center gap-3 mb-7">
+      <%= link_to root_path, class: "flex items-center gap-3 text-slate-600 hover:text-slate-800 text-sm" do %>
+        <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none">
+          <path d="M10.5 11L7 7.5L10.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="font-medium">Back to Search</span>
       <% end %>
     </div>
 
     <!-- Company Header Card -->
-    <div class="backdrop-blur-sm bg-[rgba(255,255,255,0.8)] rounded-[12.75px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)] mb-7">
-      <div class="px-[21px] pt-[21px] pb-[26.25px]">
+    <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-slate-200/60 mb-7">
+      <div class="p-6">
         <!-- Header Section -->
-        <div class="flex items-start justify-between mb-[21px]">
-          <div class="flex gap-[10.5px] items-center">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-4">
             <!-- Company Icon -->
-            <div class="bg-slate-100 p-[7px] rounded-[8.75px]">
-              <div class="w-[21px] h-[21px]">
-                <img alt="" class="block max-w-none size-full" src="http://localhost:3845/assets/dd021055bf8906dadaa79a20d8e30e76f38f27df.svg" />
-              </div>
+            <div class="bg-slate-100 p-2 rounded-lg">
+              <svg class="w-5 h-5 text-slate-600" viewBox="0 0 21 21" fill="none">
+                <path d="M8.25 9V12.75M12.75 9V12.75M6 21H15C15.7956 21 16.5587 20.6839 17.1213 20.1213C17.6839 19.5587 18 18.7956 18 18V6C18 5.20435 17.6839 4.44129 17.1213 3.87868C16.5587 3.31607 15.7956 3 15 3H9L6 6V18C6 18.7956 6.31607 19.5587 6.87868 20.1213C7.44129 20.6839 8.20435 21 9 21H6Z" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
             </div>
-
+            
             <!-- Company Info -->
-            <div class="flex flex-col gap-[3.5px]">
-              <h1 class="font-['Inter'] font-semibold text-[20.18px] leading-[28px] tracking-[-0.525px] text-[#0f172b]">
+            <div>
+              <h1 class="text-xl font-semibold text-slate-900 tracking-tight">
                 <%= @company.company_name %>
               </h1>
-              <p class="font-['Inter'] font-normal text-[12.108px] leading-[17.5px] text-[#62748e]">Software Development Company</p>
+              <p class="text-sm text-slate-500 mt-1">Software Development Company</p>
             </div>
           </div>
-
+          
           <!-- Data Source Badge -->
-          <div class="<%= @company.using_mock_data? ? 'bg-yellow-50 border-yellow-200' : 'bg-emerald-50 border-[#a4f4cf]' %> rounded-[6.75px] border px-[11.5px] py-[6.25px] flex items-center gap-[3.5px]">
-            <div class="w-[7px] h-[7px] <%= @company.using_mock_data? ? 'bg-yellow-600' : 'bg-[#00bc7d]' %> rounded-full"></div>
-            <div class="font-['Inter'] font-medium text-[10.5px] leading-[14px] <%= @company.using_mock_data? ? 'text-yellow-700' : 'text-[#007a55]' %>">
-              <%= @company.data_source_info %>
-            </div>
+          <div class="<%= @company.using_mock_data? ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200' %> px-3 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-2">
+            <div class="w-2 h-2 bg-current rounded-full"></div>
+            <%= @company.data_source_info %>
           </div>
         </div>
 
         <!-- Three Column Layout -->
-        <div class="flex gap-7 items-start w-full">
-
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-7">
+          
           <!-- Company Details Column -->
-          <div class="flex-1 flex flex-col gap-[17.5px]">
-            <h3 class="font-['Inter'] font-semibold text-[12.3px] leading-[17.5px] tracking-[0.613px] uppercase text-[#1d293d]">Company Details</h3>
-
-            <div class="flex flex-col gap-3.5">
+          <div class="space-y-4">
+            <h3 class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-4">Company Details</h3>
+            
+            <div class="space-y-3.5">
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">CUI</span>
-                <span class="font-['Inter'] font-medium text-[12.3px] leading-[17.5px] text-[#0f172b]"><%= @company.cui.gsub(/^RO/, '') %></span>
+                <span class="text-sm text-slate-500">CUI</span>
+                <span class="text-sm font-medium text-slate-900"><%= @company.cui.gsub(/^RO/, '') %></span>
               </div>
-
+              
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">Fiscal Activity</span>
-                <div class="<%= @company.api_response['FiscalActivity'] == 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-yellow-50 text-yellow-700 border-yellow-200' %> px-2 py-[2.75px] rounded-[6.75px] border font-['Inter'] font-medium text-[10.5px] leading-[14px]">
+                <span class="text-sm text-slate-500">Fiscal Activity</span>
+                <div class="<%= @company.api_response['FiscalActivity'] == 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-yellow-50 text-yellow-700 border-yellow-200' %> px-2 py-1 rounded-lg border text-xs font-medium">
                   <%= @company.api_response['FiscalActivity'] %>
                 </div>
               </div>
-
+              
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">Legal Form</span>
-                <span class="font-['Inter'] font-medium text-[12.3px] leading-[17.5px] text-[#0f172b]"><%= @company.api_response['LegalForm'] %></span>
+                <span class="text-sm text-slate-500">Legal Form</span>
+                <span class="text-sm font-medium text-slate-900"><%= @company.api_response['LegalForm'] %></span>
               </div>
-
+              
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">NACE Code</span>
-                <span class="font-['Inter'] font-medium text-[12.3px] leading-[17.5px] text-[#0f172b]"><%= @company.api_response['NACE'] %></span>
+                <span class="text-sm text-slate-500">NACE Code</span>
+                <span class="text-sm font-medium text-slate-900"><%= @company.api_response['NACE'] %></span>
               </div>
-
+              
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">Registration</span>
-                <span class="font-['Inter'] font-medium text-[12.3px] leading-[17.5px] text-[#0f172b]"><%= Date.parse(@company.api_response['Date']).strftime('%b %d, %Y') rescue @company.api_response['Date'] %></span>
+                <span class="text-sm text-slate-500">Registration</span>
+                <span class="text-sm font-medium text-slate-900"><%= Date.parse(@company.api_response['Date']).strftime('%b %d, %Y') rescue @company.api_response['Date'] %></span>
               </div>
             </div>
           </div>
 
           <!-- Location Column -->
-          <div class="flex-1 flex flex-col gap-[17.5px]">
-            <h3 class="font-['Inter'] font-semibold text-[12.3px] leading-[17.5px] tracking-[0.613px] uppercase text-[#1d293d]">Location</h3>
-
-            <div class="flex flex-col gap-3.5">
+          <div class="space-y-4">
+            <h3 class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-4">Location</h3>
+            
+            <div class="space-y-3.5">
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">City</span>
-                <span class="font-['Inter'] font-medium text-[12.3px] leading-[17.5px] text-[#0f172b]"><%= @company.api_response['City'] %></span>
+                <span class="text-sm text-slate-500">City</span>
+                <span class="text-sm font-medium text-slate-900"><%= @company.api_response['City'] %></span>
               </div>
-
+              
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">County</span>
-                <span class="font-['Inter'] font-medium text-[12.3px] leading-[17.5px] text-[#0f172b]"><%= @company.api_response['County'] %></span>
+                <span class="text-sm text-slate-500">County</span>
+                <span class="text-sm font-medium text-slate-900"><%= @company.api_response['County'] %></span>
               </div>
-
-              <div class="pt-[3.5px]">
-                <div class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e] mb-1">Address</div>
-                <div class="font-['Inter'] font-medium text-[12.3px] leading-[17.5px] text-[#0f172b]">
+              
+              <div class="pt-1">
+                <div class="text-sm text-slate-500 mb-1">Address</div>
+                <div class="text-sm font-medium text-slate-900 leading-relaxed">
                   <%= @company.api_response['Address']&.split(',')&.join('<br>')&.html_safe || @company.api_response['Address'] %>
                 </div>
               </div>
@@ -107,25 +103,25 @@
           </div>
 
           <!-- Financial Overview Column -->
-          <div class="flex-1 flex flex-col gap-[17.5px]">
-            <h3 class="font-['Inter'] font-semibold text-[12.3px] leading-[17.5px] tracking-[0.613px] uppercase text-[#1d293d]">Financial Overview</h3>
-
-            <div class="flex flex-col gap-3.5">
+          <div class="space-y-4">
+            <h3 class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-4">Financial Overview</h3>
+            
+            <div class="space-y-3.5">
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">Employees</span>
-                <div class="bg-blue-50 text-blue-700 border-blue-200 px-2 py-[2.75px] rounded-[6.75px] border font-['Inter'] font-medium text-[10.5px] leading-[14px]">
+                <span class="text-sm text-slate-500">Employees</span>
+                <div class="bg-blue-50 text-blue-700 border-blue-200 px-2 py-1 rounded-lg border text-xs font-medium">
                   <%= @company.api_response['Employees'] %> employees
                 </div>
               </div>
-
+              
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">Turnover</span>
-                <span class="font-['Inter'] font-semibold text-[12.3px] leading-[17.5px] text-[#0f172b]">RON <%= number_with_delimiter(@company.api_response['Turnover']) %></span>
+                <span class="text-sm text-slate-500">Turnover</span>
+                <span class="text-sm font-semibold text-slate-900">€<%= number_with_delimiter(@company.api_response['Turnover']) %></span>
               </div>
-
+              
               <div class="flex items-center justify-between">
-                <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">Profit</span>
-                <span class="font-['Inter'] font-semibold text-[12.3px] leading-[17.5px] text-emerald-700">RON <%= number_with_delimiter(@company.api_response['Profit']) %></span>
+                <span class="text-sm text-slate-500">Profit</span>
+                <span class="text-sm font-semibold text-emerald-700">€<%= number_with_delimiter(@company.api_response['Profit']) %></span>
               </div>
             </div>
           </div>
@@ -137,84 +133,75 @@
     <% if @eligible_programs.any? %>
       <div class="mb-8">
         <!-- Section Header -->
-        <div class="flex gap-[10.5px] items-center mb-[46px]">
-          <div class="w-[21px] h-[21px]">
-            <img alt="" class="block max-w-none size-full" src="http://localhost:3845/assets/aede578398719b00d27d08560d14bc2ed7a5d23d.svg" />
-          </div>
-          <h2 class="font-['Inter'] font-semibold text-[16.953px] leading-[24.5px] text-emerald-700">Eligible Programs</h2>
-          <div class="bg-emerald-50 text-emerald-700 border-emerald-200 px-2 py-[2.75px] rounded-[6.75px] border font-['Inter'] font-medium text-[10.5px] leading-[14px]">
+        <div class="flex items-center gap-4 mb-6">
+          <svg class="w-5 h-5 text-emerald-600" viewBox="0 0 21 21" fill="none">
+            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <h2 class="text-lg font-semibold text-emerald-700">Eligible Programs</h2>
+          <div class="bg-emerald-50 text-emerald-700 border-emerald-200 px-2 py-1 rounded-lg border text-xs font-medium">
             <%= @eligible_programs.count %> programs
           </div>
         </div>
 
         <!-- Programs Grid -->
-        <div class="<%= @eligible_programs.count > 2 ? 'flex flex-col gap-[21px]' : 'flex gap-[21px]' %>">
-          <% @eligible_programs.each_with_index do |item, index| %>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <% @eligible_programs.each do |item| %>
             <% program = item[:program] %>
             <% check = item[:check] %>
-
-            <div class="<%= @eligible_programs.count > 2 ? 'w-full' : 'flex-1' %> bg-white rounded-[12.75px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)]">
-              <div class="px-[21px] pt-[21px] pb-[26.25px]">
+            
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200/60">
+              <div class="p-6">
                 <!-- Program Header -->
-                <div class="flex items-center gap-[10.5px] mb-[35px]">
-                  <div class="w-[3.5px] h-7 bg-emerald-500 rounded-full"></div>
-                  <h3 class="font-['Inter'] font-semibold text-[14px] leading-[21px] text-[#0f172b]"><%= program.title %></h3>
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-1 h-7 bg-emerald-500 rounded-full"></div>
+                  <h3 class="text-sm font-semibold text-slate-900"><%= program.title %></h3>
                 </div>
-
+                
                 <!-- Program Description -->
-                <div class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e] mb-[21px]">
+                <div class="text-sm text-slate-600 leading-relaxed mb-5">
                   <%= truncate(program.description, length: 150) %>
                 </div>
               </div>
-
+              
               <!-- AI Analysis Section -->
-              <div class="px-[21px] pb-[21px]">
-                <div class="bg-emerald-50 border border-emerald-200 rounded-[6.75px] px-[11.5px] py-[11.5px] mb-4">
+              <div class="px-6 pb-5">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 mb-4">
                   <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-2">
-                      <span class="font-['Inter'] text-[12.3px] leading-[17.5px] text-[#62748e]">🤖 AI Analysis:</span>
-                      <div class="bg-emerald-100 text-emerald-700 border-emerald-300 px-2 py-[2.75px] rounded-[6.75px] border font-['Inter'] font-medium text-[10.5px] leading-[14px]">
+                      <span class="text-sm text-slate-600">🤖 AI Analysis:</span>
+                      <div class="bg-emerald-100 text-emerald-700 border-emerald-300 px-2 py-0.5 rounded-lg border text-xs font-medium">
                         ✓ ELIGIBLE
                       </div>
                     </div>
-
+                    
                     <!-- Scoring Badges -->
-                    <% data = parse_ai_analysis(check.ai_response) %>
-                    <div class="flex items-center gap-[6px]">
-                      <% if data[:acceptate].size > 0 %>
-                        <div class="bg-emerald-100 text-emerald-700 border-emerald-300 px-2 py-[2.75px] rounded-[6.75px] border font-['Inter'] font-medium text-[10.5px] leading-[14px]"><%= data[:acceptate].size %></div>
-                      <% end %>
-                      <% if data[:nevalidate].size > 0 %>
-                        <div class="bg-yellow-100 text-yellow-700 border-yellow-300 px-2 py-[2.75px] rounded-[6.75px] border font-['Inter'] font-medium text-[10.5px] leading-[14px]"><%= data[:nevalidate].size %></div>
-                      <% end %>
+                    <div class="flex items-center gap-2">
+                      <div class="bg-emerald-100 text-emerald-700 border-emerald-300 px-2 py-0.5 rounded-lg border text-xs font-medium">7</div>
+                      <div class="bg-yellow-100 text-yellow-700 border-yellow-300 px-2 py-0.5 rounded-lg border text-xs font-medium">4</div>
                     </div>
                   </div>
-
-                  <div class="font-['Inter'] text-[12.3px] leading-[17.5px] text-blue-600 hover:text-blue-800 cursor-pointer" onclick="toggleAnalysis<%= index %>()">
+                  
+                  <div class="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">
                     View detailed AI analysis
                   </div>
                 </div>
-
-                <!-- Collapsible AI Analysis Details -->
-                <div id="analysis<%= index %>" class="hidden mb-4">
-                  <%= render "ai_analysis_structured", check: check %>
-                </div>
-
+                
                 <!-- Action Buttons -->
-                <div class="flex items-center gap-2 pt-[14px]">
-                  <%= link_to funding_program_path(program),
-                             class: "bg-white border border-slate-300 text-neutral-950 px-[9.75px] py-[7px] rounded-[6.75px] font-['Inter'] font-medium text-[10.5px] leading-[14px] hover:bg-slate-50 flex items-center gap-[5.25px]" do %>
-                    <div class="w-3.5 h-3.5">
-                      <img alt="" class="block max-w-none size-full" src="http://localhost:3845/assets/e205e3b29b5707d8d6e41d226910b8f1da0f44be.svg" />
-                    </div>
+                <div class="flex items-center gap-2 pt-3.5">
+                  <%= link_to funding_program_path(program), 
+                             class: "bg-white border border-slate-300 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-slate-50 flex items-center gap-2" do %>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none">
+                      <path d="M7 2.5V7H10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
                     Details
                   <% end %>
-
-                  <%= link_to chat_funding_program_path(program, company_id: @company.id),
-                             class: "bg-[#155dfc] text-white px-[8.75px] py-[7px] rounded-[6.75px] font-['Inter'] font-medium text-[10.5px] leading-[14px] hover:bg-blue-700 flex items-center gap-[5.25px]" do %>
-                    <div class="w-3.5 h-3.5">
-                      <img alt="" class="block max-w-none size-full" src="http://localhost:3845/assets/668bd4d7cd868cc7c4c7a34bb41dac7d876243d6.svg" />
-                    </div>
+                  
+                  <%= link_to chat_funding_program_path(program, company_id: @company.id), 
+                             class: "bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-blue-700 flex items-center gap-2" do %>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none">
+                      <path d="M4.5 5.5H9.5M4.5 8H7.5M2 11.5L3.5 10H11C11.2761 10 11.5 9.77614 11.5 9.5V3.5C11.5 3.22386 11.2761 3 11 3H3C2.72386 3 2.5 3.22386 2.5 3.5V10.5C2.5 11.0523 2.05228 11.5 1.5 11.5H2Z" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
                     Chat with AI
                   <% end %>
                 </div>
@@ -229,49 +216,48 @@
     <% if @ineligible_programs.any? %>
       <div class="mb-8">
         <!-- Section Header -->
-        <div class="flex gap-[10.5px] items-center mb-3.5">
-          <div class="w-[21px] h-[21px]">
-            <img alt="" class="block max-w-none size-full" src="http://localhost:3845/assets/66c5d2036763415b28612ff5c48a769212c04e58.svg" />
-          </div>
-          <h2 class="font-['Inter'] font-semibold text-[16.953px] leading-[24.5px] text-[#45556c]">Ineligible Programs</h2>
-          <div class="bg-slate-100 text-[#45556c] border-slate-200 px-2 py-[2.75px] rounded-[6.75px] border font-['Inter'] font-medium text-[10.5px] leading-[14px]">
+        <div class="flex items-center gap-4 mb-4">
+          <svg class="w-5 h-5 text-slate-500" viewBox="0 0 21 21" fill="none">
+            <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <h2 class="text-lg font-semibold text-slate-600">Ineligible Programs</h2>
+          <div class="bg-slate-100 text-slate-600 border-slate-200 px-2 py-1 rounded-lg border text-xs font-medium">
             <%= @ineligible_programs.count %> programs
           </div>
         </div>
 
         <!-- Collapsible Section -->
-        <div class="bg-white rounded-[12.75px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)] px-3.5 py-3.5">
-          <div class="flex items-center justify-between cursor-pointer" onclick="toggleIneligible()">
-            <span class="font-['Inter'] font-medium text-[13.781px] leading-[21px] text-[#314158]">View ineligible programs and reasons</span>
-            <div id="ineligible-arrow" class="w-3.5 h-3.5 transition-transform">
-              <img alt="" class="block max-w-none size-full" src="http://localhost:3845/assets/ee4efd5611d0c35f8b30fcf4c60620178915d1fa.svg" />
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200/60">
+          <div class="px-4 py-5">
+            <div class="flex items-center justify-between cursor-pointer" onclick="toggleIneligible()">
+              <span class="text-sm font-medium text-slate-700">View ineligible programs and reasons</span>
+              <svg id="ineligible-arrow" class="w-3.5 h-3.5 text-slate-400 transition-transform" viewBox="0 0 14 14" fill="none">
+                <path d="M4 5.5L7 8.5L10 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
-          </div>
-
+            
             <div id="ineligible-content" class="hidden mt-4 space-y-4">
               <% @ineligible_programs.each do |item| %>
                 <% program = item[:program] %>
                 <% check = item[:check] %>
-
-                <div class="bg-slate-50 rounded-[6.75px] p-4 border border-slate-200">
+                
+                <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
                   <div class="flex items-start gap-2 mb-2">
                     <div class="w-1 h-6 bg-slate-400 rounded-full"></div>
                     <div>
-                      <h4 class="font-['Inter'] font-semibold text-[12.3px] leading-[17.5px] text-[#0f172b]"><%= program.title %></h4>
-                      <p class="font-['Inter'] text-[10.5px] leading-[14px] text-[#62748e] mt-1"><%= truncate(program.description, length: 100) %></p>
+                      <h4 class="text-sm font-semibold text-slate-900"><%= program.title %></h4>
+                      <p class="text-xs text-slate-600 mt-1"><%= truncate(program.description, length: 100) %></p>
                     </div>
                   </div>
-
-                  <div class="bg-red-50 border border-red-200 rounded-[6.75px] p-3 mt-3">
+                  
+                  <div class="bg-red-50 border border-red-200 rounded-lg p-3 mt-3">
                     <div class="flex items-center gap-2 mb-1">
-                      <span class="font-['Inter'] text-[10.5px] leading-[14px] text-[#62748e]">🤖 AI Analysis:</span>
-                      <div class="bg-red-100 text-red-700 border-red-300 px-2 py-[2.75px] rounded-[6.75px] border font-['Inter'] font-medium text-[10.5px] leading-[14px]">
+                      <span class="text-xs text-slate-600">🤖 AI Analysis:</span>
+                      <div class="bg-red-100 text-red-700 border-red-300 px-2 py-0.5 rounded-lg border text-xs font-medium">
                         ✗ NOT ELIGIBLE
                       </div>
                     </div>
-                    <div class="font-['Inter'] text-[10.5px] leading-[14px] text-[#62748e]">
-                      <%= render "ai_analysis_structured", check: check %>
-                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed"><%= check.ai_response %></p>
                   </div>
                 </div>
               <% end %>
@@ -288,7 +274,7 @@
 function toggleIneligible() {
   const content = document.getElementById('ineligible-content');
   const arrow = document.getElementById('ineligible-arrow');
-
+  
   if (content.classList.contains('hidden')) {
     content.classList.remove('hidden');
     arrow.style.transform = 'rotate(180deg)';
@@ -297,16 +283,4 @@ function toggleIneligible() {
     arrow.style.transform = 'rotate(0deg)';
   }
 }
-
-<% @eligible_programs.each_with_index do |item, index| %>
-function toggleAnalysis<%= index %>() {
-  const content = document.getElementById('analysis<%= index %>');
-
-  if (content.classList.contains('hidden')) {
-    content.classList.remove('hidden');
-  } else {
-    content.classList.add('hidden');
-  }
-}
-<% end %>
 </script>
