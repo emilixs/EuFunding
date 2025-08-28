@@ -1,233 +1,110 @@
-<style>
-  .company-container {
-    min-height: 100vh;
-    background-color: #f8fafc;
-    padding: 2rem 1rem;
-  }
-  .content-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #64748b;
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: 2rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.5rem;
-    background: white;
-    transition: all 0.2s;
-  }
-  .back-button:hover {
-    background-color: #f8fafc;
-    color: #334155;
-  }
-  .main-card {
-    background: white;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-  }
-  .card-header {
-    padding: 2rem;
-    border-bottom: 1px solid #f1f5f9;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-  }
-  .company-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .company-name {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin: 0;
-    line-height: 1.2;
-  }
-  .status-badge {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    backdrop-filter: blur(10px);
-  }
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
-  }
-  .info-section {
-    background: #f8fafc;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    border: 1px solid #e2e8f0;
-  }
-  .section-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #374151;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .section-title::before {
-    content: '';
-    width: 4px;
-    height: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 2px;
-  }
-  .info-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #e2e8f0;
-  }
-  .info-item:last-child {
-    border-bottom: none;
-  }
-  .info-label {
-    color: #6b7280;
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-  .info-value {
-    font-weight: 600;
-    color: #111827;
-    text-align: right;
-  }
-  .badge {
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.375rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-align: center;
-  }
-  .badge-success {
-    background-color: #ecfdf5;
-    color: #047857;
-    border: 1px solid #d1fae5;
-  }
-  .badge-info {
-    background-color: #eff6ff;
-    color: #1d4ed8;
-    border: 1px solid #dbeafe;
-  }
-  .badge-profit {
-    background-color: #f0fdf4;
-    color: #15803d;
-    border: 1px solid #bbf7d0;
-  }
-  @media (max-width: 768px) {
-    .company-container {
-      padding: 1rem 0.5rem;
-    }
-    .company-name {
-      font-size: 1.75rem;
-    }
-    .company-title {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .info-grid {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-      padding: 1rem;
-    }
-  }
-</style>
+<div class="min-h-screen bg-slate-50/50">
+  <div class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+    <!-- Header Navigation -->
+    <div class="flex items-center gap-3 text-slate-600 hover:text-slate-800 cursor-pointer transition-colors w-fit">
+      <%= link_to root_path, class: "flex items-center gap-3 text-slate-600 hover:text-slate-800 transition-colors" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="text-sm font-medium">Back to Search</span>
+      <% end %>
+    </div>
 
-<div class="company-container">
-  <div class="content-wrapper">
-    <%= link_to root_path, class: "back-button" do %>
-      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-      Back to Search
-    <% end %>
-
-    <div class="main-card">
-      <div class="card-header">
-        <div class="company-title">
-          <h1 class="company-name"><%= @company.company_name %></h1>
-          <div class="status-badge">
+    <!-- Company Profile Card -->
+    <div class="border-0 shadow-sm bg-white/80 backdrop-blur-sm rounded-lg">
+      <div class="pb-6 p-6">
+        <div class="flex items-start justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-slate-100 rounded-lg">
+                <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+              </div>
+              <div>
+                <h1 class="text-2xl font-semibold text-slate-900 tracking-tight"><%= @company.company_name %></h1>
+                <p class="text-sm text-slate-500 mt-1">Software Development Company</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-50 px-3 py-1.5 rounded-md">
+            <div class="w-2 h-2 bg-emerald-500 rounded-full mr-2 animate-pulse inline-block"></div>
             <%= @company.data_source_info %>
           </div>
         </div>
       </div>
 
-      <div class="info-grid">
-        <div class="info-section">
-          <h3 class="section-title">Company Details</h3>
-          <div class="info-item">
-            <span class="info-label">CUI</span>
-            <span class="info-value"><%= @company.cui %></span>
+      <div class="pt-0 p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Company Information -->
+          <div class="space-y-5">
+            <h3 class="font-semibold text-slate-800 text-sm uppercase tracking-wider">Company Details</h3>
+            <div class="space-y-4">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">CUI</span>
+                <span class="font-medium text-slate-900"><%= @company.cui %></span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">Fiscal Activity</span>
+                <div class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-1 rounded text-xs">
+                  <%= @company.api_response['FiscalActivity'] %>
+                </div>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">Legal Form</span>
+                <span class="font-medium text-slate-900"><%= @company.api_response['LegalForm'] %></span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">NACE Code</span>
+                <span class="font-medium text-slate-900"><%= @company.api_response['NACE'] %></span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">Registration</span>
+                <span class="font-medium text-slate-900"><%= @company.api_response['Date'] %></span>
+              </div>
+            </div>
           </div>
-          <div class="info-item">
-            <span class="info-label">Fiscal Activity</span>
-            <span class="badge badge-success"><%= @company.api_response['FiscalActivity'] %></span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Legal Form</span>
-            <span class="info-value"><%= @company.api_response['LegalForm'] %></span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">NACE Code</span>
-            <span class="info-value"><%= @company.api_response['NACE'] %></span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Registration</span>
-            <span class="info-value"><%= @company.api_response['Date'] %></span>
-          </div>
-        </div>
 
-        <div class="info-section">
-          <h3 class="section-title">Location</h3>
-          <div class="info-item">
-            <span class="info-label">City</span>
-            <span class="info-value"><%= @company.api_response['City'] %></span>
+          <!-- Location -->
+          <div class="space-y-5">
+            <h3 class="font-semibold text-slate-800 text-sm uppercase tracking-wider">Location</h3>
+            <div class="space-y-4">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">City</span>
+                <span class="font-medium text-slate-900"><%= @company.api_response['City'] %></span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">County</span>
+                <span class="font-medium text-slate-900"><%= @company.api_response['County'] %></span>
+              </div>
+              <div class="space-y-2">
+                <span class="text-slate-500 text-sm">Address</span>
+                <p class="text-sm font-medium text-slate-900 leading-relaxed">
+                  <%= @company.api_response['Address'] %>
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="info-item">
-            <span class="info-label">County</span>
-            <span class="info-value"><%= @company.api_response['County'] %></span>
-          </div>
-          <div class="info-item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
-            <span class="info-label">Address</span>
-            <span class="info-value" style="text-align: left; line-height: 1.5;">
-              <%= @company.api_response['Address'] %>
-            </span>
-          </div>
-        </div>
 
-        <div class="info-section">
-          <h3 class="section-title">Financial Overview</h3>
-          <div class="info-item">
-            <span class="info-label">Employees</span>
-            <span class="badge badge-info"><%= @company.api_response['Employees'] %> employees</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Turnover</span>
-            <span class="info-value">RON <%= number_with_delimiter(@company.api_response['Turnover']) %></span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Profit</span>
-            <span class="badge badge-profit">RON <%= number_with_delimiter(@company.api_response['Profit']) %></span>
+          <!-- Financial Info -->
+          <div class="space-y-5">
+            <h3 class="font-semibold text-slate-800 text-sm uppercase tracking-wider">Financial Overview</h3>
+            <div class="space-y-4">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">Employees</span>
+                <div class="bg-blue-50 text-blue-700 border border-blue-200 px-2 py-1 rounded text-xs">
+                  <%= @company.api_response['Employees'] %> employees
+                </div>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">Turnover</span>
+                <span class="font-semibold text-slate-900">RON <%= number_with_delimiter(@company.api_response['Turnover']) %></span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-500 text-sm">Profit</span>
+                <span class="font-semibold text-emerald-600">RON <%= number_with_delimiter(@company.api_response['Profit']) %></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -235,18 +112,18 @@
 
     <!-- Eligible Programs Section -->
     <% if @eligible_programs.any? %>
-      <div style="margin-top: 3rem;">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; padding: 0 2rem;">
-          <svg style="width: 1.5rem; height: 1.5rem; color: #059669;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="space-y-6">
+        <div class="flex items-center gap-3">
+          <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          <h2 style="font-size: 1.5rem; font-weight: 600; color: #059669; margin: 0;">Eligible Programs</h2>
-          <div style="background-color: #ecfdf5; color: #047857; border: 1px solid #d1fae5; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">
+          <h2 class="text-xl font-semibold text-emerald-700">Eligible Programs</h2>
+          <div class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-1 rounded text-xs">
             <%= @eligible_programs.count %> programs
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 1.5rem; padding: 0 2rem;">
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
           <% @eligible_programs.each_with_index do |item, index| %>
             <% program = item[:program] %>
             <% check = item[:check] %>
@@ -254,82 +131,80 @@
             <% status_info = eligibility_status_info(data[:result]) %>
 
             <!-- Program Card -->
-            <div style="background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: all 0.3s; border: 1px solid #e2e8f0; overflow: hidden;">
-              <div style="padding: 1.5rem; border-bottom: 1px solid #f1f5f9;">
-                <div style="display: flex; align-items: flex-start; gap: 1rem;">
-                  <div style="width: 4px; height: 60px; background: linear-gradient(135deg, #059669 0%, #047857 100%); border-radius: 2px; flex-shrink: 0;"></div>
-                  <div style="flex: 1;">
-                    <h3 style="font-size: 1.125rem; font-weight: 600; color: #111827; margin: 0 0 0.75rem 0; line-height: 1.4;"><%= program.title %></h3>
-                    <p style="color: #6b7280; font-size: 0.875rem; line-height: 1.6; margin: 0;">
+            <div class="border-0 shadow-sm bg-white hover:shadow-md transition-all duration-200 group rounded-lg">
+              <div class="pb-4 p-6">
+                <div class="flex items-start justify-between">
+                  <div class="space-y-2 flex-1">
+                    <div class="flex items-center gap-2">
+                      <div class="w-1 h-8 bg-emerald-500 rounded-full"></div>
+                      <h3 class="font-semibold text-slate-900"><%= program.title %></h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
                       <%= program.description.present? ? truncate(program.description, length: 150) : "Support for companies developing or implementing environmentally friendly technologies, renewable energy solutions, and sustainable business practices." %>
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div style="padding: 1.5rem;">
-                <div style="background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); border: 1px solid #d1fae5; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem;">
-                  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                      <span style="font-size: 1.25rem;">🤖</span>
-                      <span style="font-size: 0.875rem; color: #374151; font-weight: 500;">AI Analysis:</span>
-                      <div style="background-color: #059669; color: white; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">
-                        ✓ ELIGIBLE
+              <div class="space-y-5 p-6 pt-0">
+                <div class="flex items-center justify-between p-3 bg-emerald-50 rounded-lg border border-emerald-100">
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm text-slate-600">🤖 AI Analysis:</span>
+                    <div class="bg-emerald-100 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 px-2 py-1 rounded text-xs font-medium">
+                      ✓ ELIGIBLE
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <% if data[:acceptate].size > 0 %>
+                      <div class="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-1 rounded text-xs">
+                        <%= data[:acceptate].size %>
                       </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                      <% if data[:acceptate].size > 0 %>
-                        <div style="background-color: #ecfdf5; color: #047857; border: 1px solid #d1fae5; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">
-                          ✓ <%= data[:acceptate].size %>
-                        </div>
-                      <% end %>
-                      <% if data[:nevalidate].size > 0 %>
-                        <div style="background-color: #fef3c7; color: #d97706; border: 1px solid #fde68a; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">
-                          ? <%= data[:nevalidate].size %>
-                        </div>
-                      <% end %>
-                    </div>
+                    <% end %>
+                    <% if data[:nevalidate].size > 0 %>
+                      <div class="bg-amber-100 text-amber-800 border border-amber-300 px-2 py-1 rounded text-xs">
+                        <%= data[:nevalidate].size %>
+                      </div>
+                    <% end %>
                   </div>
                 </div>
 
-                <details style="margin-bottom: 1rem;">
-                  <summary style="cursor: pointer; color: #2563eb; font-size: 0.875rem; font-weight: 500; padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0;">
-                    <span style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                      <svg style="width: 1rem; height: 1rem; transition: transform 0.2s;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                      </svg>
-                      View detailed AI analysis
-                    </span>
-                  </summary>
-                  <div style="margin-top: 1rem; padding: 1rem; background-color: #f8fafc; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
-                    <% if data[:nevalidate].size > 0 %>
-                      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                        <div style="width: 8px; height: 8px; background-color: #f59e0b; border-radius: 50%;"></div>
-                        <span style="font-weight: 500; color: #d97706; font-size: 0.875rem;">Missing Information (<%= data[:nevalidate].size %>)</span>
-                      </div>
-                      <p style="font-size: 0.75rem; color: #6b7280; margin: 0 0 1rem 1.25rem; line-height: 1.5;">
-                        • Specific criteria for <%= program.title %> cannot be validated as they were not provided in documentation
-                      </p>
-                      <div style="border-top: 1px solid #e2e8f0; margin: 1rem 0;"></div>
-                    <% end %>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                      <div style="width: 8px; height: 8px; background-color: #059669; border-radius: 50%;"></div>
-                      <span style="font-weight: 500; color: #047857; font-size: 0.875rem;">Criteria Met (<%= data[:acceptate].size %>)</span>
-                    </div>
+                <div class="text-sm text-blue-600 hover:text-blue-700 cursor-pointer" onclick="toggleDetails('<%= program.id %>')">
+                  <div class="flex items-center justify-between">
+                    <span>View detailed AI analysis</span>
+                    <svg class="w-4 h-4 transition-transform" id="chevron-<%= program.id %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
                   </div>
-                </details>
+                </div>
 
-                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid #f1f5f9;">
-                  <div style="display: flex; gap: 0.75rem;">
-                    <%= link_to funding_program_path(program), style: "display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 500; color: #374151; text-decoration: none; transition: all 0.2s;" do %>
-                      <svg style="width: 0.75rem; height: 0.75rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="mt-4 space-y-3 p-4 bg-slate-50 rounded-lg border border-slate-200 hidden" id="details-<%= program.id %>">
+                  <% if data[:nevalidate].size > 0 %>
+                    <div class="flex items-center gap-2 text-sm">
+                      <div class="w-2 h-2 bg-amber-500 rounded-full"></div>
+                      <span class="font-medium text-amber-700">Missing Information (<%= data[:nevalidate].size %>)</span>
+                    </div>
+                    <p class="text-xs text-slate-600 pl-4">
+                      • Specific criteria for <%= program.title %> cannot be validated as they were not provided in documentation
+                    </p>
+                    <div class="border-t border-slate-200 my-2"></div>
+                  <% end %>
+                  <div class="flex items-center gap-2 text-sm">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                    <span class="font-medium text-emerald-700">Criteria Met (<%= data[:acceptate].size %>)</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-4">
+                  <div class="flex gap-2">
+                    <%= link_to funding_program_path(program), class: "h-8 text-xs font-medium border border-slate-300 hover:bg-slate-50 px-3 py-1.5 rounded inline-flex items-center" do %>
+                      <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                       </svg>
                       Details
                     <% end %>
-                    <%= link_to chat_funding_program_path(program, company_id: @company.id), style: "display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 0.375rem; font-size: 0.75rem; font-weight: 500; color: white; text-decoration: none; transition: all 0.2s; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);" do %>
-                      <svg style="width: 0.75rem; height: 0.75rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <%= link_to chat_funding_program_path(program, company_id: @company.id), class: "h-8 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded inline-flex items-center" do %>
+                      <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                       </svg>
                       Chat with AI
@@ -345,85 +220,79 @@
 
     <!-- Ineligible Programs Section -->
     <% if @ineligible_programs.any? %>
-      <div style="margin-top: 3rem; padding: 0 2rem;">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-          <svg style="width: 1.5rem; height: 1.5rem; color: #6b7280;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          <h2 style="font-size: 1.5rem; font-weight: 600; color: #6b7280; margin: 0;">Ineligible Programs</h2>
-          <div style="background-color: #f1f5f9; color: #6b7280; border: 1px solid #e2e8f0; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">
+          <h2 class="text-xl font-semibold text-slate-600">Ineligible Programs</h2>
+          <div class="bg-slate-100 text-slate-600 border border-slate-200 px-2 py-1 rounded text-xs">
             <%= @ineligible_programs.count %> programs
           </div>
         </div>
 
-        <details style="background: white; border-radius: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; overflow: hidden;">
-          <summary style="cursor: pointer; padding: 1.5rem; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-bottom: 1px solid #e2e8f0;">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
-              <span style="font-weight: 500; color: #374151;">
+        <div class="border-0 shadow-sm bg-white hover:shadow-md transition-all duration-200 cursor-pointer rounded-lg" onclick="toggleIneligible()">
+          <div class="p-4">
+            <div class="flex items-center justify-between">
+              <span class="font-medium text-slate-700 group-hover:text-slate-900">
                 View ineligible programs and reasons
               </span>
-              <svg style="width: 1rem; height: 1rem; color: #6b7280; transition: transform 0.2s;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 text-slate-400 transition-transform" id="chevron-ineligible" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
               </svg>
             </div>
-          </summary>
-          <div style="padding: 1.5rem;">
-            <p style="color: #6b7280; line-height: 1.6; margin: 0;">
-              <%= @ineligible_programs.count %> programs are not eligible for this company based on current criteria analysis.
-              Detailed reasoning available upon request.
-            </p>
           </div>
-        </details>
+          <div class="border-0 shadow-sm bg-slate-50 rounded-lg hidden" id="ineligible-content">
+            <div class="p-6">
+              <p class="text-slate-600">
+                <%= @ineligible_programs.count %> programs are not eligible for this company based on current criteria analysis.
+                Detailed reasoning available upon request.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
 
     <!-- No Programs Message -->
     <% if @eligible_programs.empty? && @ineligible_programs.empty? %>
-      <div style="text-align: center; padding: 5rem 2rem;">
-        <div style="font-size: 4rem; margin-bottom: 1.5rem;">🔍</div>
-        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: #111827;">No Active Programs</h2>
-        <p style="color: #6b7280; font-size: 1.125rem; line-height: 1.6; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+      <div class="text-center py-20">
+        <div class="text-6xl mb-4">🔍</div>
+        <h2 class="text-2xl font-bold mb-4">No Active Programs</h2>
+        <p class="text-slate-600">
           There are currently no active EU funding programs in our database.
           Please check back later or contact an administrator to add programs.
         </p>
-        <%= link_to "Search Another Company", root_path, style: "display: inline-block; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 500; transition: all 0.2s; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);" %>
+        <%= link_to "Search Another Company", root_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mt-6 inline-block" %>
       </div>
     <% end %>
   </div>
 </div>
 
-<style>
-  /* Hover effects */
-  .back-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+<script>
+function toggleDetails(programId) {
+  const details = document.getElementById(`details-${programId}`);
+  const chevron = document.getElementById(`chevron-${programId}`);
 
-  details[open] summary svg {
-    transform: rotate(180deg);
+  if (details.classList.contains('hidden')) {
+    details.classList.remove('hidden');
+    chevron.style.transform = 'rotate(180deg)';
+  } else {
+    details.classList.add('hidden');
+    chevron.style.transform = 'rotate(0deg)';
   }
+}
 
-  /* Button hover effects */
-  a[style*="background: linear-gradient(135deg, #2563eb"]:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3) !important;
-  }
+function toggleIneligible() {
+  const content = document.getElementById('ineligible-content');
+  const chevron = document.getElementById('chevron-ineligible');
 
-  a[style*="border: 1px solid #d1d5db"]:hover {
-    background-color: #f9fafb !important;
-    border-color: #9ca3af !important;
+  if (content.classList.contains('hidden')) {
+    content.classList.remove('hidden');
+    chevron.style.transform = 'rotate(180deg)';
+  } else {
+    content.classList.add('hidden');
+    chevron.style.transform = 'rotate(0deg)';
   }
-
-  /* Card hover effects */
-  div[style*="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1)"]:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-  }
-
-  /* Mobile responsiveness */
-  @media (max-width: 640px) {
-    div[style*="grid-template-columns: repeat(auto-fit, minmax(500px, 1fr))"] {
-      grid-template-columns: 1fr !important;
-    }
-  }
-</style>
+}
+</script>
