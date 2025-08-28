@@ -1,14 +1,12 @@
 <div class="min-h-screen bg-slate-50/50">
   <div class="max-w-7xl mx-auto px-6 py-8 space-y-8">
     <!-- Header Navigation -->
-    <div class="flex items-center gap-3 text-slate-600 hover:text-slate-800 cursor-pointer transition-colors w-fit">
-      <%= link_to root_path, class: "flex items-center gap-3 text-slate-600 hover:text-slate-800 transition-colors" do %>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-        </svg>
-        <span class="text-sm font-medium">Back to Search</span>
-      <% end %>
-    </div>
+    <%= link_to root_path, class: "flex items-center gap-3 text-slate-600 hover:text-slate-800 cursor-pointer transition-colors w-fit" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="text-sm font-medium">Back to Search</span>
+    <% end %>
 
     <!-- Company Profile Card -->
     <div class="border-0 shadow-sm bg-white/80 backdrop-blur-sm rounded-lg">
@@ -150,7 +148,7 @@
                 <div class="flex items-center justify-between p-3 bg-emerald-50 rounded-lg border border-emerald-100">
                   <div class="flex items-center gap-2">
                     <span class="text-sm text-slate-600">🤖 AI Analysis:</span>
-                    <div class="bg-emerald-100 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 px-2 py-1 rounded text-xs font-medium">
+                    <div class="bg-emerald-100 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 px-2 py-1 rounded text-xs">
                       ✓ ELIGIBLE
                     </div>
                   </div>
@@ -168,8 +166,8 @@
                   </div>
                 </div>
 
-                <div class="text-sm text-blue-600 hover:text-blue-700 cursor-pointer" onclick="toggleDetails('<%= program.id %>')">
-                  <div class="flex items-center justify-between">
+                <div class="cursor-pointer" onclick="toggleProgram('<%= program.id %>')">
+                  <div class="flex items-center justify-between text-sm text-blue-600 hover:text-blue-700">
                     <span>View detailed AI analysis</span>
                     <svg class="w-4 h-4 transition-transform" id="chevron-<%= program.id %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -231,18 +229,20 @@
           </div>
         </div>
 
-        <div class="border-0 shadow-sm bg-white hover:shadow-md transition-all duration-200 cursor-pointer rounded-lg" onclick="toggleIneligible()">
-          <div class="p-4">
-            <div class="flex items-center justify-between">
-              <span class="font-medium text-slate-700 group-hover:text-slate-900">
-                View ineligible programs and reasons
-              </span>
-              <svg class="w-4 h-4 text-slate-400 transition-transform" id="chevron-ineligible" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
+        <div class="cursor-pointer group" onclick="toggleIneligible()">
+          <div class="border-0 shadow-sm bg-white hover:shadow-md transition-all duration-200 rounded-lg">
+            <div class="p-4">
+              <div class="flex items-center justify-between">
+                <span class="font-medium text-slate-700 group-hover:text-slate-900">
+                  View ineligible programs and reasons
+                </span>
+                <svg class="w-4 h-4 text-slate-400 transition-transform" id="chevron-ineligible" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </div>
             </div>
           </div>
-          <div class="border-0 shadow-sm bg-slate-50 rounded-lg hidden" id="ineligible-content">
+          <div class="mt-4 border-0 shadow-sm bg-slate-50 rounded-lg hidden" id="ineligible-content">
             <div class="p-6">
               <p class="text-slate-600">
                 <%= @ineligible_programs.count %> programs are not eligible for this company based on current criteria analysis.
@@ -270,29 +270,47 @@
 </div>
 
 <script>
-function toggleDetails(programId) {
-  const details = document.getElementById(`details-${programId}`);
-  const chevron = document.getElementById(`chevron-${programId}`);
+(function() {
+  let expandedProgram = null;
+  let ineligibleOpen = false;
 
-  if (details.classList.contains('hidden')) {
-    details.classList.remove('hidden');
-    chevron.style.transform = 'rotate(180deg)';
-  } else {
-    details.classList.add('hidden');
-    chevron.style.transform = 'rotate(0deg)';
-  }
-}
+  window.toggleProgram = function(programId) {
+    const details = document.getElementById(`details-${programId}`);
+    const chevron = document.getElementById(`chevron-${programId}`);
 
-function toggleIneligible() {
-  const content = document.getElementById('ineligible-content');
-  const chevron = document.getElementById('chevron-ineligible');
+    if (expandedProgram === programId) {
+      details.classList.add('hidden');
+      chevron.classList.remove('rotate-180');
+      expandedProgram = null;
+    } else {
+      // Close previously opened program
+      if (expandedProgram) {
+        const prevDetails = document.getElementById(`details-${expandedProgram}`);
+        const prevChevron = document.getElementById(`chevron-${expandedProgram}`);
+        if (prevDetails) prevDetails.classList.add('hidden');
+        if (prevChevron) prevChevron.classList.remove('rotate-180');
+      }
 
-  if (content.classList.contains('hidden')) {
-    content.classList.remove('hidden');
-    chevron.style.transform = 'rotate(180deg)';
-  } else {
-    content.classList.add('hidden');
-    chevron.style.transform = 'rotate(0deg)';
-  }
-}
+      // Open current program
+      details.classList.remove('hidden');
+      chevron.classList.add('rotate-180');
+      expandedProgram = programId;
+    }
+  };
+
+  window.toggleIneligible = function() {
+    const content = document.getElementById('ineligible-content');
+    const chevron = document.getElementById('chevron-ineligible');
+
+    if (ineligibleOpen) {
+      content.classList.add('hidden');
+      chevron.classList.remove('rotate-180');
+      ineligibleOpen = false;
+    } else {
+      content.classList.remove('hidden');
+      chevron.classList.add('rotate-180');
+      ineligibleOpen = true;
+    }
+  };
+})();
 </script>
