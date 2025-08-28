@@ -1,0 +1,31 @@
+<%
+  # Badge component with shadcn/ui styling
+  # Usage: <%= render 'components/ui/badge', variant: 'default', class: '' do %>
+  #   Badge content
+  # <% end %>
+  
+  variant ||= 'default'
+  local_assigns[:class] ||= ''
+  
+  variant_classes = {
+    'default' => 'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
+    'secondary' => 'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
+    'destructive' => 'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
+    'outline' => 'text-foreground'
+  }
+  
+  base_classes = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
+  
+  badge_classes = [
+    base_classes,
+    variant_classes[variant],
+    local_assigns[:class]
+  ].compact.join(' ')
+  
+  # Extract badge-specific attributes
+  badge_attrs = local_assigns.except(:variant, :class)
+%>
+
+<div class="<%= badge_classes %>" <%= badge_attrs.map { |k, v| "#{k}=\"#{v}\"" }.join(' ').html_safe %>>
+  <%= yield %>
+</div>

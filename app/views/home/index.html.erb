@@ -1,64 +1,184 @@
-<!-- Hero Section -->
-<div class="hero min-h-screen bg-base-200">
-  <div class="hero-content text-center">
-    <div class="max-w-md">
-      <h1 class="text-5xl font-bold">EU Funding Check</h1>
-      <p class="py-6">
-        Enter your Romanian company's CUI (fiscal code) to discover eligible EU funding programs instantly.
-      </p>
-      
-      <%= form_with url: check_path, method: :post, local: true, class: "space-y-4" do |form| %>
-        <div class="form-control w-full">
-          <%= form.text_field :cui, 
-                             placeholder: "Enter CUI (e.g., RO12345678)", 
-                             class: "input input-bordered input-lg w-full",
-                             required: true %>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-yellow-50 relative overflow-hidden">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-blue-200/30 to-blue-300/20 rounded-full blur-xl"></div>
+    <div class="absolute top-60 right-16 w-24 h-24 bg-gradient-to-br from-yellow-200/40 to-yellow-300/20 rounded-full blur-lg"></div>
+    <div class="absolute bottom-32 left-1/4 w-20 h-20 bg-gradient-to-br from-purple-200/30 to-purple-300/20 rounded-full blur-lg"></div>
+    <div class="absolute bottom-20 right-8 w-28 h-28 bg-gradient-to-br from-green-200/30 to-green-300/20 rounded-full blur-xl"></div>
+  </div>
+
+  <div class="relative z-10 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-lg">
+      <!-- Header section with abstract logo -->
+      <div class="text-center mb-8">
+        <div class="flex justify-center items-center mb-6">
+          <div class="relative">
+            <!-- Abstract geometric logo -->
+            <div class="w-20 h-20 relative">
+              <!-- Background glow -->
+              <div class="absolute inset-0 bg-gradient-to-br from-blue-300/60 to-purple-300/50 rounded-full blur-xl"></div>
+              
+              <!-- Main hexagonal structure -->
+              <div class="absolute inset-2 relative">
+                <!-- Primary hexagon -->
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-400/70 to-yellow-400/60 transform rotate-12 rounded-lg blur-sm"></div>
+                
+                <!-- Secondary hexagon -->
+                <div class="absolute inset-1 bg-gradient-to-tr from-purple-400/75 to-blue-500/65 transform -rotate-12 rounded-lg blur-xs"></div>
+                
+                <!-- Tertiary layer -->
+                <div class="absolute inset-2 bg-gradient-to-bl from-yellow-500/60 to-green-400/50 transform rotate-45 rounded-md"></div>
+              </div>
+              
+              <!-- Floating particles -->
+              <div class="absolute top-1 right-2 w-1.5 h-1.5 bg-gradient-to-br from-blue-500/80 to-blue-600/70 rounded-full blur-[0.5px]"></div>
+              <div class="absolute bottom-2 left-1 w-1 h-1 bg-gradient-to-br from-yellow-500/75 to-yellow-600/65 rounded-full blur-[0.5px]"></div>
+              <div class="absolute top-3 left-3 w-0.5 h-0.5 bg-gradient-to-br from-purple-500/85 to-purple-600/75 rounded-full"></div>
+              <div class="absolute bottom-1 right-1 w-1 h-1 bg-gradient-to-br from-green-500/70 to-green-600/60 rounded-full blur-[0.5px]"></div>
+              
+              <!-- Center focal point -->
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div class="w-3 h-3 bg-gradient-to-br from-white/90 to-blue-100/80 rounded-full shadow-md backdrop-blur-sm border border-white/40"></div>
+              </div>
+              
+              <!-- Orbital rings -->
+              <div class="absolute inset-3 border border-blue-300/50 rounded-full"></div>
+              <div class="absolute inset-5 border border-purple-300/40 rounded-full"></div>
+            </div>
+          </div>
         </div>
-        
-        <%= form.submit "Check Eligibility", 
-                       class: "btn btn-primary btn-lg w-full" %>
+        <h1 class="text-4xl font-bold text-foreground mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent whitespace-nowrap">
+          Verificare Finanțare UE
+        </h1>
+        <p class="text-muted-foreground max-w-md mx-auto">
+          Introduceți CUI-ul companiei dvs. românești pentru a descoperi instantaneu programele de finanțare UE eligibile.
+        </p>
+      </div>
+
+      <%= render 'components/ui/card', class: 'p-8 bg-white/60 backdrop-blur-sm border-white/10 shadow-lg shadow-blue-500/5 border border-blue-100/30' do %>
+        <%= form_with url: check_path, method: :post, local: true, class: "space-y-6", id: "cui-form" do |form| %>
+          <div class="space-y-2">
+            <div class="flex items-center gap-2 mb-3">
+              <!-- Building2 icon -->
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+              <label for="cui" class="text-foreground font-medium">
+                CUI Companie
+              </label>
+            </div>
+            <div class="relative">
+              <%= render 'components/ui/input', 
+                         id: 'cui',
+                         name: 'cui',
+                         type: 'text',
+                         placeholder: 'Introduceți CUI (ex., RO12345678)',
+                         class: 'bg-white/50 border border-blue-200/30 text-foreground placeholder:text-muted-foreground focus:ring-blue-500 focus:border-blue-400/50 pl-4 pr-12 py-3 rounded-xl transition-all duration-200 hover:border-blue-300/50',
+                         maxlength: '15',
+                         required: true %>
+              <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                <!-- Search icon -->
+                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <%= render 'components/ui/button', 
+                     type: 'submit',
+                     class: 'w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 rounded-xl transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg shadow-blue-500/25',
+                     id: 'submit-btn' do %>
+            <div class="flex items-center gap-2" id="button-content">
+              <!-- TrendingUp icon -->
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+              </svg>
+              <span>Caută Finanțări Eligibile</span>
+            </div>
+            <div class="hidden items-center gap-2" id="loading-content">
+              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <span>Se caută...</span>
+            </div>
+          <% end %>
+        <% end %>
+
+        <div class="mt-8 pt-6 border-t border-blue-100/50">
+          <div class="flex items-start gap-3 text-muted-foreground">
+            <!-- CheckCircle icon -->
+            <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-sm leading-relaxed">
+              Vom prelua datele companiei dvs. din surse oficiale și vom analiza eligibilitatea pentru programele de finanțare UE active.
+            </p>
+          </div>
+        </div>
       <% end %>
-      
-      <p class="text-sm text-base-content/70 mt-4">
-        We'll fetch your company data from official sources and analyze eligibility for active EU funding programs.
-      </p>
+
+      <!-- Feature highlights -->
+      <div class="mt-8 grid grid-cols-3 gap-4">
+        <div class="text-center p-4 bg-white/40 backdrop-blur-sm rounded-xl border border-white/20">
+          <div class="w-8 h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+            <!-- CheckCircle icon -->
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <p class="text-xs text-muted-foreground">Date Oficiale</p>
+        </div>
+        <div class="text-center p-4 bg-white/40 backdrop-blur-sm rounded-xl border border-white/20">
+          <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+            <!-- TrendingUp icon -->
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+          </div>
+          <p class="text-xs text-muted-foreground">Analiză Rapidă</p>
+        </div>
+        <div class="text-center p-4 bg-white/40 backdrop-blur-sm rounded-xl border border-white/20">
+          <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+            <!-- Euro icon -->
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <p class="text-xs text-muted-foreground">Finanțări UE</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Features Section -->
-<div class="py-20">
-  <div class="text-center mb-16">
-    <h2 class="text-3xl font-bold">How It Works</h2>
-    <p class="mt-4 text-lg text-base-content/80">Simple, fast, and powered by AI</p>
-  </div>
-  
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <!-- Step 1 -->
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body text-center">
-        <div class="text-4xl mb-4">🔍</div>
-        <h3 class="card-title justify-center">Enter CUI</h3>
-        <p>Provide your company's fiscal identification code</p>
-      </div>
-    </div>
-    
-    <!-- Step 2 -->
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body text-center">
-        <div class="text-4xl mb-4">🤖</div>
-        <h3 class="card-title justify-center">AI Analysis</h3>
-        <p>Our AI analyzes your company against EU funding criteria</p>
-      </div>
-    </div>
-    
-    <!-- Step 3 -->
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body text-center">
-        <div class="text-4xl mb-4">💰</div>
-        <h3 class="card-title justify-center">Get Results</h3>
-        <p>Discover eligible programs and get expert consultation</p>
-      </div>
-    </div>
-  </div>
-</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('cui-form');
+  const cuiInput = document.getElementById('cui');
+  const submitBtn = document.getElementById('submit-btn');
+  const buttonContent = document.getElementById('button-content');
+  const loadingContent = document.getElementById('loading-content');
+
+  // Format CUI input
+  cuiInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+    if (value.length > 0 && !value.startsWith('RO')) {
+      value = 'RO' + value;
+    }
+    e.target.value = value;
+  });
+
+  // Handle form submission
+  form.addEventListener('submit', function(e) {
+    if (!cuiInput.value.trim()) {
+      e.preventDefault();
+      return;
+    }
+
+    // Show loading state
+    submitBtn.disabled = true;
+    buttonContent.classList.add('hidden');
+    loadingContent.classList.remove('hidden');
+    loadingContent.classList.add('flex');
+  });
+});
+</script>

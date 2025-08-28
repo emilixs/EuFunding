@@ -17,29 +17,18 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%# Include Tailwind build (tailwindcss-rails) and any app styles %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <!-- Navbar -->
-    <div class="navbar bg-base-100 shadow-lg">
-      <div class="navbar-start">
-        <%= link_to root_path, class: "btn btn-ghost text-xl" do %>
-          🇪🇺 EU Funding
-        <% end %>
-      </div>
-      <div class="navbar-end">
-        <!-- Admin access through /admin URL -->
-      </div>
-    </div>
-
+  <body class="min-h-screen bg-background font-sans antialiased">
     <!-- Flash messages -->
     <% if flash.any? %>
-      <div class="container mx-auto px-4 mt-4">
+      <div class="fixed top-4 right-4 z-50 space-y-2">
         <% flash.each do |type, message| %>
-          <div class="alert <%= type == 'error' ? 'alert-error' : 'alert-success' %> mb-4">
+          <div class="rounded-lg border p-4 bg-background shadow-lg <%= type == 'error' ? 'border-destructive/50 text-destructive' : 'border-green-500/50 text-green-600' %>">
             <span><%= message %></span>
           </div>
         <% end %>
@@ -47,15 +36,8 @@
     <% end %>
 
     <!-- Main content -->
-    <main class="container mx-auto px-4 py-8">
+    <main>
       <%= yield %>
     </main>
-
-    <!-- Footer -->
-    <footer class="footer footer-center p-10 bg-base-200 text-base-content mt-20">
-      <div>
-        <p>EU Funding Eligibility Platform - Check your company's eligibility for European funding programs</p>
-      </div>
-    </footer>
   </body>
 </html>

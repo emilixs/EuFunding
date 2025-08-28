@@ -1,0 +1,21 @@
+<%
+  # Progress component with shadcn/ui styling
+  # Usage: <%= render 'components/ui/progress', value: 50, class: '' %>
+  
+  value ||= 0
+  local_assigns[:class] ||= ''
+  
+  base_classes = 'relative h-4 w-full overflow-hidden rounded-full bg-secondary'
+  
+  progress_classes = [
+    base_classes,
+    local_assigns[:class]
+  ].compact.join(' ')
+  
+  # Extract progress-specific attributes
+  progress_attrs = local_assigns.except(:value, :class)
+%>
+
+<div class="<%= progress_classes %>" <%= progress_attrs.map { |k, v| "#{k}=\"#{v}\"" }.join(' ').html_safe %>>
+  <div class="h-full w-full flex-1 bg-primary transition-all" style="transform: translateX(-<%= 100 - value %>%)"></div>
+</div>

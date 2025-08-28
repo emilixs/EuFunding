@@ -1,0 +1,15 @@
+<%
+  # Input component with shadcn/ui styling
+  input_type = local_assigns[:type] || 'text'
+  css_class = local_assigns[:class] || ''
+
+  base_classes = 'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+
+  final_classes = "#{base_classes} #{css_class}".strip
+
+  # Get other attributes
+  other_attrs = local_assigns.except(:class)
+  attr_string = other_attrs.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')
+%>
+
+<input class="<%= final_classes %>" <%= attr_string.html_safe %> />

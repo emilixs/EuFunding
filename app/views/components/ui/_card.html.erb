@@ -1,0 +1,10 @@
+<%
+  # Card component with shadcn/ui styling
+  css_class = local_assigns[:class] || ''
+  base_classes = 'rounded-lg border bg-card text-card-foreground shadow-sm'
+  final_classes = "#{base_classes} #{css_class}".strip
+%>
+
+<div class="<%= final_classes %>">
+  <%= yield %>
+</div>
